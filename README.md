@@ -1,182 +1,136 @@
-# Template para ufscthesisx
+# Decentralized Synchronization Engine for Real-Time Applications
 
-Modelo Canônico de TCC,
-Monografia,  Dissertação,
-Tese ou Relatório de Pós--Doutorado da UFSC com abnTeX2.
-Originado de endereço https://github.com/AdrianoRuseler/abntex2-ufsc com o nome `abntex2-ufsc`,
-este projeto foi renomeado para `ufscthesisx`.
+**An undergraduate thesis (TCC) by Guilherme Focassio dos Santos**
+Information Systems · Federal University of Santa Catarina (UFSC)
 
-Esse projeto não está vinculado a nenhum órgão da UFSC.
+[![Build Status](https://github.com/guiklose/graduation-thesis/actions/workflows/checks.yml/badge.svg)](https://github.com/guiklose/graduation-thesis/actions)
+![Status](https://img.shields.io/badge/status-work--in--progress-yellow)
+![Expected](https://img.shields.io/badge/defense-2027-blue)
 
-Qualquer problema com a utilização ou com o modelo em si,
-basta criar um issue aqui no GitHub no nosso issue tracker: [issues](../../issues)
+---
 
+## About Me
 
-## Modelo em PDF
+I'm Guilherme, an Information Systems undergraduate at UFSC (INE — Departamento
+de Informática e Estatística, CTC — Centro Tecnológico). This repository is
+where I'm writing, versioning, and building my thesis — in the open, the way
+software gets built, not locked away in a single `.docx` file on someone's
+laptop.
 
-Se você quer ter uma ideia de como é o modelo,
-a compilação deve resultar no seguinte [PDF](../../../ufscthesisx-images/blob/master/pdf_exemplo_completo.pdf).
+📫 [guilhermeklosesantos@gmail.com](mailto:guilhermeklosesantos@gmail.com) · [@guiklose](https://github.com/guiklose)
 
+## About This Research
 
-## Instalar `LaTeX` e `abnTeX2`
+Every time you drag a pin on a shared map, drop a sticky note on a collaborative
+board, or watch a cursor move in real time next to yours, something is quietly
+resolving a hard problem: **what happens when two people change the same thing
+at the same moment, and there's no central server around to say who's right?**
 
-Para poder utilizar a classe é necessário ter uma distribuição atual do LaTeX,
-incluindo o pacote abnTeX2.
-*Sugerimos formtemente a utilização da distribiução TeX Live para Windows e Linux e MacTeX para macOS*.
+The client-server model answered that question for decades by simply
+*having* a central authority — but centralization has a cost: a single point
+of failure, a scalability ceiling, and a server bill that grows with every
+user. Peer-to-peer architectures removed that single point of failure once
+before — Napster, Gnutella, BitTorrent, Kademlia — but they were built for
+static, immutable data: a file's hash doesn't change. Modern interactive
+systems are the opposite: state changes *constantly*, from multiple places,
+at the same time.
 
-As configurações específicas para cada sistema podem ser encontradas nos link abaixo para o pacote `abnTeX2`:
-1. [abntex2 CTAN](http://www.ctan.org/pkg/abntex2)
-1. [abnTeX2 Instalação](https://github.com/abntex/abntex2/wiki/Instalacao)
+This thesis asks what happens if you take that same decentralized, no-single-point-of-failure
+philosophy and apply it to **live, mutable, real-time state** instead —
+without falling back on a central server to arbitrate conflicts.
 
+**The approach:** a low-level, domain-agnostic synchronization engine built
+around **Conflict-free Replicated Data Types (CRDTs)** and logical event
+ordering, designed to guarantee *Strong Eventual Consistency* across peers
+with no central coordinator. To validate it, the thesis builds a proof of
+concept: real-time synchronization of an interactive map across multiple
+simultaneous users — the kind of workload where latency, convergence time,
+and correctness under concurrent edits actually matter.
 
-### Instalação Ubuntu/Linux Mint and others
+### Research Goals
 
-```
-sudo apt-get install texlive-full
-sudo apt-get install xzdec
-```
+- Study the theoretical foundations of consistency in decentralized
+  distributed systems — CRDTs, logical clocks, gossip protocols;
+- Design a modular, low-level synchronization engine: async network I/O,
+  data framing, multi-threaded concurrency control, volatile-state
+  persistence;
+- Implement the middleware with a focus on runtime performance —
+  zero-copy serialization, concurrency-friendly data structures;
+- Build a working proof-of-concept application that exercises the engine
+  under real, concurrent, multi-user load;
+- Measure it: replica convergence time, gossip payload/network throughput,
+  induced latency, CPU and memory consumption;
+- Document the design trade-offs, the engineering lessons, and the open
+  questions for future work.
 
+## Status
 
-### Instalação Windows
+This is a living thesis, not a finished one — the repository evolves as the
+research does.
 
-1. Baixe o arquivo do instalador em: https://miktex.org/download
-1. Enquando seguindo dos passas do instalador,
-   assegure-se de marcar para instalar todos os pacotes latex (full install).
+| | |
+|---|---|
+| **Advisor** | Prof. Odorico Machado Mendizabal |
+| **Institution** | Universidade Federal de Santa Catarina (UFSC) |
+| **Program** | Bacharelado em Sistemas de Informação |
+| **Expected defense** | 2027 |
 
+Progress so far: front matter, abstract, and bibliography are in place; the
+Introduction chapter is drafted and being refined on its own branch;
+Development, Implementation, and Conclusion chapters are still ahead.
 
-## Baixando diretamente modelo UFSC
+## Built With
 
-Caso queria,
-pode baixar diretamente o arquivo `zip` em [releases](../../releases) e descompacte o arquivo.
+This document is written in [LaTeX](https://www.latex-project.org/), using
+the [`ufscthesisx`](https://github.com/UFSC/ufscthesisx) template — a
+Canonical Model for UFSC theses, dissertations, and course conclusion
+reports built on top of [abnTeX2](http://www.abntex.net.br/), which
+implements Brazil's ABNT formatting standards (NBR 14724 and related norms)
+directly in the document class, so the content stays separate from the
+formatting rules.
 
+## Getting Started
 
-## Utilizando `git` para baixar o modelo USFC
+### Prerequisites
 
-No diretório do seu projeto faça um clone (recursivo) dos arquivos do repositório:
+A full TeX Live (Linux) or MacTeX (macOS) / MiKTeX (Windows) installation,
+including `latexmk` and `biber`:
+
 ```bash
-git clone --recursive https://github.com/ufsc/ufscthesisx
+# Ubuntu/Debian
+sudo apt-get install texlive-full xzdec latexmk
 ```
 
-Este repositório já contém um exemplo de tese com uso avançado de conceitos e LaTeX.
-Se você tiver interesse em utilizar esse **template**,
-você precisa preencher os seus dados como nome do orientador,
-coorientador, seu nome,
-nome da sua instituição,
-do seu curso, departamento,
-etc.
+### Building
 
-Para isso altere os dados fictícios para os corretos no arquivo `main.tex`,
-que é o arquivo principal do **template** utilizado,
-e carrega todos os pacotes necessários e incluir os arquivos LaTeX que contém as partes da sua monografia.
-
-
-## Utilizando Overleaf para digitar sua tese com modelo UFSC
-
-Se você quiser,
-pode utilizar o [Overleaf](https://www.overleaf.com),
-um sistema de editoração *online* de textos em LaTeX.
-
-Se você já tiver uma conta no Overleaf pode fazer o *upload* do arquivo `.zip` baixado em [releases](../../releases).
-
-Você também pode fazer o *upload* automaticamente para Overleaf com a última versão disponível clicando
-[aqui](https://overleaf.com/docs?snip_uri=https://github.com/UFSC/ufscthesisx/releases/latest/download/ufscthesisx.zip).
-
-
-# Uso
-
-A ideia é fazer com que você utilize a classe abnTeX2,
-mas com customizações voltadas para as normas de trabalhos acadêmicos da UFSC,
-fazendo com que o seu uso seja idêntico ao uso direto da classe abnTeX2.
-
-A documentação dessa classe pode ser encontrada nos link a seguir e também é possível
-encontrar modelos de documentos que utilizam a classe para tomar como base:
-1. [Documentação e Modelos abnTeX2](https://www.ctan.org/pkg/abntex2)
-
-Para compilar este modelo,
-você pode utilizar seu editor git favorito,
-e pedir para ele compilar o documento a partir do arquivo `main.tex` no diretório principal.
-
-Por conveniência,
-você também pode executar o arquivo `build.bat` caso você esteja no Windows,
-ou executar o comando `make` caso você esteja no Linux.
-
-
-## Compilação
-
-O jeito mais legal de compilar é executando um dos seguintes comandos:
-1. **`make clean`**
-1. **`make clean halt=1 debug=1`**
-1. **`make latex biber latex1`**
-1. **`make latex biber latex1 halt=1 debug=1`**
-1. **`make latex biber latex1 biber1 latex2`**
-1. **`make latex biber latex1 biber1 latex2 halt=1 debug=1`**
-1. **`...`**
-
-Se você quiser saber quais são todos os comandos de compilação disponíveis,
-basta chamar utilizar o comando `make help`. Exemplo:
-```
-$ make help
-
- Usage:
-   make <target> [debug=1]
-
- Use debug=1 to run make in debug mode. Use this if something does not work!
- Examples:
-   make help
-   make debug=1
-   make latex debug=1
-   make thesis debug=1
-
-...
-```
-
-Caso você tenha problemas,
-error ou algo não funcione,
-execute o make file em modo debug.
-Para isso,
-basta chamar ele como você normalmente faz,
-mas passando o parâmetro `debug=true`.
-Por exemplo,
-`make latex debug=true`.
-
-Por conveniência,
-você também pode chamar `make latex debug=a` qualquer outra coisa desde que não seja vazio.
-Por exemplo,
-`make latex debug=1` Você também pode diretamente editar o arquivo `setup/makefile.mk` e
-descomentar a linha `# ENABLE_DEBUG_MODE := true` para ativar o modo debug permanentemente.
-
-
-##  Normas da UFSC para trabalhos acadêmicos
-
-Na UFSC,
-a Biblioteca Central disponibiliza um site específico para as normas e foi com base nessas informações que este projeto foi feito.
-1. [Geral](http://portal.bu.ufsc.br/normalizacao/)
-1. [Normas de Citação](http://www.bu.ufsc.br/design/Citacao1.htm)
-1. [Normas em docx](http://www.bu.ufsc.br/design/TemplateTrabalhoAcademico.docx)
-1. [Capa](http://www.bu.ufsc.br/design/Guia_Rapido_Diagramacao_Trabalhos_Academicos.pdf)
-1. [Dados da ficha](http://ficha.bu.ufsc.br/)
-1. [Ficha de identificação da obra](http://portal.bu.ufsc.br/servicos/ficha-de-identificacao-da-obra/)
-
-
-## Site da abnTeX2
-
-1. [abnTeX2](http://www.abntex.net.br/)
-1. https://github.com/abntex/abntex2
-1. https://github.com/abntex/biblatex-abnt
-
-
-# Mudanças
-
-Para ver as mudanças, acesse o histórico do `git` no endereço [commits/master](../../commits/master).
-
-Ou clone este repositório e execute seguinte comando do cliente git:
 ```bash
-# https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History
-git log
+git clone --recursive https://github.com/guiklose/graduation-thesis.git
+cd graduation-thesis
+make
 ```
 
+The compiled PDF is generated at `main.pdf` in the project root. See
+`make help` for every available build target.
 
-# Licença
+## Repository Structure
+
+```
+main.tex              Root document — metadata, structure, includes
+settings.tex          Package configuration
+beforetext/            Front matter: cover, dedication, abstract, epigraph...
+chapters/              Introduction, Development, Conclusion
+aftertext/              References (references.bib)
+pictures/               Figures and diagrams
+setup/                  abnTeX2/ABNT class engine (submodule)
+```
+
+## Acknowledgments & License
+
+This thesis is built on the [`ufscthesisx`](https://github.com/UFSC/ufscthesisx)
+template, itself derived from
+[`abntex2-ufsc`](https://github.com/AdrianoRuseler/abntex2-ufsc) and the
+[abnTeX2](http://www.abntex.net.br/) project. The template (not this thesis'
+own written content) is distributed under the following notice:
 
 ```
 Copyright (c) 2012-2014 by abnTeX2 group at http://abntex2.googlecode.com/
@@ -185,24 +139,35 @@ Copyright (c) 2015-2016 Adriano Ruseler
 Copyright (c) 2017-2018 Evandro Coan, Luiz Rafael dos Santos
 Copyright (c) 2019-2019 Alisson Lopes Furlani
 
-É concedida permissão, gratuitamente, a qualquer pessoa que obtenha uma cópia deste modelo e
-software e arquivos de documentação associados (o "Software"), para ter estes arquivos com os
-direitos de uso, cópia, modificação, mesclagem, publicar, distribuir, e permitir que as pessoas a
-quem o Software seja fornecido tenham estes mesmos direitos, ambos sujeitos às seguintes condições:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this template and associated software and documentation files (the
+"Software"), to deal in the Software with the rights to use, copy, modify,
+merge, publish, and distribute copies of the Software, and to permit persons
+to whom the Software is furnished to do so, subject to the following
+conditions:
 
-O aviso de direitos autorais acima e este aviso de permissão devem ser incluídos em todas as cópias
-ou partes substanciais do Software.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-Os arquivos `chapters/intro.tex`, `chapters/chapter_1.tex` e `setup/ufscthesisx.sty` estão
-licenciados sobre a licença LPPL (The Latex Project License). Portanto você deve respeitar essa
-licença para esses arquivos ao invés dessa. Entretanto a condição a seguir continuará valendo sobre
-esses arquivos licenciados pela licença LPPL:
+The files `chapters/intro.tex` and `setup/ufscthesisx.sty` are licensed
+under the LPPL (The LaTeX Project Public License). You must respect that
+license for those files instead of the one above. However, the following
+condition still applies to those LPPL-licensed files:
 
-OS ARQUIVOS NESTE REPOSITÓRIO SÃO FORNECIDOS "NO ESTADO EM QUE SE ENCONTRAM", SEM GARANTIA DE
-QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO, MAS NÃO SE LIMITANDO ÀS GARANTIAS DE
-COMERCIALIZAÇÃO, APTIDÃO PARA UM PROPÓSITO ESPECÍFICO E NÃO INFRACÇÃO. EM NENHUMA CIRCUNSTÂNCIA, OS
-AUTORES OU TITULARES DE DIREITOS AUTORAIS SERÃO RESPONSÁVEIS POR QUALQUER RECLAMAÇÃO, DANOS OU OUTRA
-RESPONSABILIDADE, SEJA EM AÇÃO DE CONTRATO, DELITO OU DE OUTRA FORMA, DECORRENTE, DESTE OU
-RELACIONADO COM DOS ARQUIVOS DESTE REPOSITÓRIO OU O USO OU OUTRAS NEGOCIAÇÕES NO MODELO E SOFTWARE.
+THE FILES IN THIS REPOSITORY ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE FILES IN THIS
+REPOSITORY OR THE USE OR OTHER DEALINGS IN THE TEMPLATE AND SOFTWARE.
 ```
 
+Any issue with the template itself (not this thesis' content) can be
+reported upstream at [UFSC/ufscthesisx/issues](https://github.com/UFSC/ufscthesisx/issues).
+
+---
+
+<p align="center">
+  <sub>Made with LaTeX, coffee, and a healthy respect for distributed systems.</sub>
+</p>
