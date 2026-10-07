@@ -73,15 +73,12 @@ section=TITLE, % Título de seções em caixa alta
 % https://www.overleaf.com/learn/latex/Inserting_Images
 \graphicspath{{pictures/}}
 
-% FIXME: Preencha com seus dados
-\autor{\brazilword{Escreva aqui o Nome completo do Autor ou da Autora}}
-\titulo{\lang{Work Title\protect\\Could be break into two lines}{Título do trabalho\protect\\Pode ser Quebrado em duas linhas}}
+\autor{\brazilword{Guilherme Focassio dos Santos}}
+\titulo{\lang{Analysis and Implementation of a Decentralized Synchronization Engine for Real-Time Applications}{Análise e Implementação de um Motor de Sincronização Descentralizada para Aplicações em Tempo Real}}
 
-% FIXME: Se houver subtítulo, descomente a linha abaixo
-\subtitulo{\lang{Subtitle}{Subtítulo}}
+% \subtitulo{\lang{Subtitle}{Subtítulo}}
 
-% FIXME: Siglas para grau de formação Dr./Dra., Me./Ma, Bel. Bela. (inglês: PhD., MSc., Bs.)
-\orientador[\lang{Supervisor}{Orientador(a)}]{\brazilword{Nome completo do Orientador(a)}, \lang{Phd.}{Dr.}}
+\orientador[\lang{Supervisor}{Orientador(a)}]{\brazilword{Odorico Machado Mendizabal}, \lang{Phd.}{Dr.}}
 
 % FIXME: Se houver coorientador, descomente a linha abaixo
 % \coorientador[\lang{Co-supervisor}{Coorientador(a)}]{\brazilword{Nome do coorientador(a)}, \lang{Phd.}{Dr.}}
@@ -92,8 +89,7 @@ section=TITLE, % Título de seções em caixa alta
 % FIXME: Local da sua defesa
 \local{\brazilword{Florianópolis, Santa Catarina} -- \lang{Brazil}{Brasil}}
 
-% FIXME: Ano da sua defesa
-\ano{2019}
+\ano{2027}
 \biblioteca{\lang{University Library}{Biblioteca Universitária}}
 
 % FIXME: Sigla da sua instituição
@@ -106,14 +102,13 @@ section=TITLE, % Título de seções em caixa alta
 % FIXME: Se houver Área de Concentração, descomente a linha abaixo
 % \area{\lang{Formal Languages}{Linguagens Formais}}
 
-% FIXME: Preencha com Doutor, Bacharel ou Mestrando
 \formacao{\lang
-    {Bachelor of Science degree in Computer Science}
-    {Bacharel em Ciências da Computação}%
+    {Bachelor of Science degree in Information Systems}
+    {Bacharel em Sistemas de Informação}%
 }
 \programa{\lang
-    {Undergraduate Program in Computer Science}
-    {Programa de Graduação em Ciências da Computação}%
+    {Undergraduate Program in Information Systems}
+    {Curso de Sistemas de Informação}%
 }
 
 % FIXME: Preencha com Departamento de XXXXXX, Centro de XXXXXX
@@ -125,8 +120,7 @@ section=TITLE, % Título de seções em caixa alta
 % FIXME: Preencha com Campus XXXXXX     ou     Centro de XXXXXX
 \campus{\brazilword{Campus Reitor João David Ferreira Lima}}
 
-% FIXME: Data da sua defesa
-\data{\lang{30 of march of}{30 de março de} 2019}
+\data{\lang{[day] of [month] of}{[dia] de [mês] de} 2027}
 
 % O preambulo deve conter tipo do trabalho, objetivo, nome da instituição e a área de concentração.
 \preambulo{\lang%
@@ -146,13 +140,19 @@ section=TITLE, % Título de seções em caixa alta
 \useshorthands{~}\defineshorthand{~=}{\hyp{}}
 
 \palavraschaveufsc{palavraschaveingles}   {Keyword 1}
-\palavraschaveufsc{palavraschaveportugues}{Palavra~=Chave 1}
+\palavraschaveufsc{palavraschaveportugues}{Peer-to-Peer}
 
 \palavraschaveufsc{palavraschaveingles}   {Keyword 2}
-\palavraschaveufsc{palavraschaveportugues}{Palavra~=Chave 2}
+\palavraschaveufsc{palavraschaveportugues}{P2P}
 
 \palavraschaveufsc{palavraschaveingles}   {Keyword 3}
-\palavraschaveufsc{palavraschaveportugues}{Palavra~=Chave 3}
+\palavraschaveufsc{palavraschaveportugues}{Cliente-Servidor}
+
+\palavraschaveufsc{palavraschaveingles}   {Keyword 4}
+\palavraschaveufsc{palavraschaveportugues}{CRDTs}
+
+\palavraschaveufsc{palavraschaveingles}   {Keyword 5}
+\palavraschaveufsc{palavraschaveportugues}{Sincronização de Estados}
 
 
 \hypersetup
@@ -246,24 +246,8 @@ section=TITLE, % Título de seções em caixa alta
     \ifforcedinclude\else\part{\lang{Research}{Pesquisa}}\fi
     \label{primeira_parte}
 
-    % Introdução (exemplo de capítulo sem numeração, mas presente no Sumário)
-    \include{chapters/intro}
-
-    % Capitulo com exemplos de comandos inseridos de arquivo externo
-    \include{chapters/chapter_1}
-
-    % Capitulo de revisão de literatura
-    \include{chapters/chapter_2}
-
-    % Primeiro capitulo de Resultados
-    \include{chapters/chapter_3}
-
-    % PARTE
-    \ifforcedinclude\else\part{\lang{Implementation}{Implementação}}\fi
-    \label{segunda_parte}
-
-    % Segundo capitulo de Resultados
-    \include{chapters/chapter_4}
+    % Introdução -- em andamento na branch "introduction" (stashada por enquanto)
+    % \include{chapters/intro}
 
     % Finaliza a parte no bookmark do PDF para que se inicie o bookmark na raiz
     % e adiciona espaço de parte no Sumário
@@ -293,28 +277,25 @@ section=TITLE, % Título de seções em caixa alta
     % Glossário, consulte o manual da classe abntex2 para orientações sobre o glossário.
     % \ifforcedinclude\else\glossary\fi
 
-    % Inicia os apêndices
-    \begin{apendicesenv}
-        % Imprime uma página indicando o início dos apêndices
-        \ifforcedinclude\else\partapendices\fi
-        \setlength\beforechapskip{50pt}
-        \setlength\midchapskip{20pt}
-        \setlength\afterchapskip{20pt}
+    % Apêndices (nenhum ainda -- descomente e crie aftertext/apendice_a.tex quando precisar)
+    % \begin{apendicesenv}
+    %     \ifforcedinclude\else\partapendices\fi
+    %     \setlength\beforechapskip{50pt}
+    %     \setlength\midchapskip{20pt}
+    %     \setlength\afterchapskip{20pt}
+    %
+    %     \include{aftertext/apendice_a}
+    % \end{apendicesenv}
 
-        \include{aftertext/apendice_a}
-    \end{apendicesenv}
-
-    % Inicia os anexos
-    \begin{anexosenv}
-        % Imprime uma página indicando o início dos anexos
-        \ifforcedinclude\else\partanexos\fi
-        \setlength\beforechapskip{50pt}
-        \setlength\midchapskip{20pt}
-        \setlength\afterchapskip{20pt}
-
-        \include{aftertext/anexo_a}
-        \include{aftertext/anexo_b}
-    \end{anexosenv}
+    % Anexos (nenhum ainda -- descomente e crie aftertext/anexo_a.tex quando precisar)
+    % \begin{anexosenv}
+    %     \ifforcedinclude\else\partanexos\fi
+    %     \setlength\beforechapskip{50pt}
+    %     \setlength\midchapskip{20pt}
+    %     \setlength\afterchapskip{20pt}
+    %
+    %     \include{aftertext/anexo_a}
+    % \end{anexosenv}
 
     % INDICE REMISSIVO
     \ifforcedinclude\else
@@ -323,4 +304,3 @@ section=TITLE, % Título de seções em caixa alta
     \fi
 
 \end{document}
-
