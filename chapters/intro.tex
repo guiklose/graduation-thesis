@@ -34,6 +34,17 @@ mesmos metadados. Para as aplicações do mundo moderno, pautadas no envio e
 recebimento massivo de dados de aplicações em tempo real, as redes peer-to-peer
 enfrentam um novo grande desafio: a sincronização de dados em tempo real.
 
+Como uma alternativa para superar essas limitações sem recorrer ao modelo
+cliente-servidor, este trabalho propõe o desenvolvimento e análise de um
+Motor de Sincronização Descentralizada para Aplicações em Tempo Real. Para
+fundamentar e resolver o conflito de divergência sem autoridade central, o
+motor utiliza estruturas de dados específicas para consistência eventual,
+como Conflict-free Replicated Data Types (CRDTs) \cite{shapiro2011}. Para
+validar e avaliar o desempenho da solução em termos de latência,
+resiliência e concorrência, é desenvolvida uma Proof of Concept (PoC)
+focada na sincronização espacial de mapas interativos entre múltiplos
+usuários simultâneos.
+
 \section{Objetivos}
 
 Esta seção busca formalizar os objetivos do presente trabalho.

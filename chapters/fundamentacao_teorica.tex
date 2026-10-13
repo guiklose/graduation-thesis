@@ -2,26 +2,32 @@
 \chapter{\lang{Theoretical Background}{Fundamentação Teórica}}
 \phantomsection
 
-As redes Peer-to-peer estão na computação como conceito e aplicações desde os
+\section{Evolução Histórica das Arquiteturas Distribuídas e do Modelo P2P}
+
+\subsection{As Origens na ARPANET e a Simetria Original}
+
+As redes \textit{Peer-to-peer} estão na computação como conceito e aplicações desde os
 primórdios da ARPANET. Na verdade, a própria ARPANET poderia ser descrita
 como uma rede de comunicação entre nodos -- ou ``pares'' -- descentralizada
 \cite{crocker1969}, o que se refletiu na própria criação da internet. A
-internet como conhecemos hoje é uma comunicação entre múltiplas máquinas,
+internet como é conhecida hoje é uma comunicação entre múltiplas máquinas,
 múltiplos pares, para envio e recebimento de recursos. Longe de ser uma
 novidade recente, o conceito é maduro e fundamenta a comunicação entre
 sistemas desde a década de 1960.
+
+\subsection{A Dominância do Modelo Cliente-Servidor e a Crise de Escalabilidade}
 
 Nos anos 90 ocorreu uma transição do que se conhecia anteriormente como
 ARPANET para a World Wide Web, trazendo com a mudança milhões de usuários
 leigos buscando e consumindo informações de uma maneira nunca antes vista na
 história da humanidade. Nesse aspecto, um modelo vigorou, dominou e se
 consolidou como o padrão desse novo ambiente: o modelo cliente-servidor
-\cite{fieldingtaylor2000,tanenbaumvansteen2007}. Para entendermos os
-principais motivos do sucesso desse novo modelo, precisamos repensar algumas
-características das redes peer-to-peer que precisariam ser adaptadas para
+\cite{fieldingtaylor2000,tanenbaumvansteen2007}. Para entender os
+principais motivos do sucesso desse novo modelo, é preciso repensar algumas
+características das redes \textit{peer-to-peer} que precisariam ser adaptadas para
 essa nova realidade.
 
-Redes peer-to-peer trocam mensagens para definir qual a versão ``correta''
+Redes \textit{peer-to-peer} trocam mensagens para definir qual a versão ``correta''
 -- muitas vezes subjetiva -- de um pacote, dado ou informação. Com o advento
 da internet, milhões de novas máquinas começaram a processar, enviar e
 receber esses pacotes/informações a todo momento. Isso, na época, foi um
@@ -32,7 +38,7 @@ download \cite{ripeanu2001}.
 Naquela época, muitas residências tinham altas -- para a época -- taxas de
 download, mas baixíssimas taxas de upload. Fazer todas essas máquinas,
 algumas vezes rápidas, outras lentas, responderem requisições teria uma
-latência e velocidade muito inferior a simplesmente um data center com
+latência e velocidade muito inferior a simplesmente um \textit{data center} com
 links dedicados de alta velocidade, capazes de responder milhares de
 clientes passivos \cite{saroiu2002}.
 
@@ -49,7 +55,7 @@ trafegados. A rede não estava mais apenas baixando e fazendo upload de HTML
 e arquivos de textos de poucos kbytes, os arquivos de músicas elevaram esse
 patamar para os megabytes, causando a explosão das contas das
 infraestruturas dos servidores centrais \cite{saroiu2002}. Para ilustrar
-esse gargalo de largura de banda (egress bandwidth), em um cenário
+esse gargalo de largura de banda (\textit{egress bandwidth}), em um cenário
 hipotético no qual um milhão de usuários querem baixar um HTML de 20kbytes
 o servidor precisará lidar com cerca de 20 Gigabytes de dados de saída, com
 um arquivo MP3 de 5MB no mesmo servidor, seria necessária uma demanda
@@ -60,16 +66,18 @@ O volume de dados massivo forçava os servidores centrais a um limite o
 qual eles não eram capazes de suportar sem encarecer demais o serviço. A
 centralização do estado e dos recursos fez com que a disponibilidade de
 todo o sistema ficasse refém do servidor central, um único ponto de falha
-(Single Point of Failure, ou SPOF) \cite{tanenbaumvansteen2007}. Isso gerou
-flash crowds (picos de tráfego) que derrubaram servidores inteiros por
+(\textit{Single Point of Failure}, ou SPOF) \cite{tanenbaumvansteen2007}. Isso gerou
+\textit{flash crowds} (picos de tráfego) que derrubaram servidores inteiros por
 exaustão de CPU, indisponibilizando o serviço para todos os usuários
 \cite{padmanabhan2002}.
 
 Os pontos negativos do modelo cliente-servidor vieram à tona, escalabilidade,
 disponibilidade, custo e manutenção eram apenas alguns deles. A crise criou
-o cenário perfeito para o ressurgimento das redes Peer-to-peer, que
+o cenário perfeito para o ressurgimento das redes \textit{Peer-to-peer}, que
 reemergiam como uma alternativa viável e escalável para o problema, em 1999
 surge o Napster.
+
+\subsection{P2P de Primeira Geração: A Arquitetura Híbrida do Napster}
 
 Criado em 1999 por Shawn Fanning e Sean Parker, o Napster como solução de
 software provou a viabilidade de uma implementação P2P em larga escala
@@ -80,17 +88,17 @@ músicas, de sites estáticos ou canais de IRC da época.
 O Napster resolveu o gargalo financeiro e o de largura de banda do modelo
 cliente-servidor na distribuição desses arquivos, na época, pesados. Por
 exemplo, para uma empresa distribuir um vídeo de 1 Terabyte de dados, seria
-necessário 1 Terabyte de egress bandwidth dos data centers. Com o Napster
+necessário 1 Terabyte de \textit{egress bandwidth} dos \textit{data centers}. Com o Napster
 essa infraestrutura de rede, hardware e conexão é repassada para os
-próprios usuários da rede, os nodos ou peers. Os usuários que querem baixar
+próprios usuários da rede, os nodos ou \textit{peers}. Os usuários que querem baixar
 um determinado arquivo fazem essa busca pela rede até encontrar alguém o
 servindo. A partir disso, cria-se uma conexão entre os dois, onde os
 recursos computacionais de ambos são usados para o compartilhamento,
-reduzindo, e muito, o estresse das máquinas centrais dos data centers
+reduzindo, e muito, o estresse das máquinas centrais dos \textit{data centers}
 \cite{adarhuberman2000}.
 
 Mesmo com tudo isso, o Napster ainda não era uma rede totalmente
-descentralizada. Ao invés disso, atuava como uma arquitetura híbrida, ou
+descentralizada. Em vez disso, atuava como uma arquitetura híbrida, ou
 P2P de primeira geração, combinando elementos de centralização com
 transferência direta de dados \cite{schollmeier2001}. Na execução do
 programa, o cliente se conecta com servidores centrais mantidos pelo
@@ -99,12 +107,12 @@ compartilhamento, endereço IP e porta de conexão. Os servidores centrais do
 Napster mantinham em memória índices globais e dinâmicos em tempo real,
 mapeando milhões de arquivos com respectivos endereços de IP. Quando um
 usuário procurava por uma música, pelo nome, por exemplo, essa pesquisa era
-convertida em uma query e enviada para o servidor central. O servidor
+convertida em uma \textit{query} e enviada para o servidor central. O servidor
 pesquisava em suas tabelas pelo índice e retornava uma lista contando IPs
 de usuários que estavam provendo aquele conteúdo e suas velocidades de
 conexão (upload e download). Assim que o usuário escolhia a fonte, a
 conexão entre ele e o servidor central acabava e começava a conexão TCP
-direta entre os nodos/peers. O arquivo requerido pelo usuário consumidor
+direta entre os nodos/\textit{peers}. O arquivo requerido pelo usuário consumidor
 era, então, enviado do usuário provedor para o seu computador. Embora o
 problema do gargalo tenha sido resolvido, dois pontos fracos principais
 finalizaram as operações do Napster em 2001:
@@ -114,7 +122,7 @@ finalizaram as operações do Napster em 2001:
     tabelas de índices, fosse derrubada, toda a rede como um todo parava de
     funcionar. Algo análogo a um motorista em uma cidade desconhecida com
     GPS desligado. Os servidores centrais eram o novo ponto de falha única
-    (SPOF -- Single point of failure) do sistema \cite{tanenbaumvansteen2007};
+    (SPOF -- \textit{Single point of failure}) do sistema \cite{tanenbaumvansteen2007};
 
     \item Esse ponto único de falha foi justamente o foco principal do
     ataque contra o Napster realizado por cortes e juízes americanos, que
@@ -122,47 +130,51 @@ finalizaram as operações do Napster em 2001:
     a rede perdia o seu propósito.
 \end{itemize}
 
+\subsection{P2P de Segunda Geração: Descentralização Não Estruturada, \textit{Flooding} e Supernós}
+
 Após a queda do Napster, uma rede P2P de primeira geração (híbridas com
 servidor central), como ficou conhecida posteriormente, surgiram protocolos
 100\% descentralizados e não estruturados, como o Gnutella
 \cite{ripeanu2001}. Redes P2P de segunda geração são marcadas,
-principalmente, pela eliminação do servidor central usando flooding de
+principalmente, pela eliminação do servidor central usando \textit{flooding} de
 mensagens, não existia servidor central nem tabela de índice. Quando um
-peer quer um arquivo, ele envia mensagens diretamente para seus nodos
+\textit{peer} quer um arquivo, ele envia mensagens diretamente para seus nodos
 vizinhos, que fazem o mesmo, consecutivamente, até o nodo detentor do
 arquivo ser encontrado. Uma vez encontrado, uma conexão direta é
 estabelecida entre ambos para upload ou download do arquivo, a depender da
-ponta. O claro gargalo é o flooding, ou inundação, de mensagens na rede,
+ponta. O claro gargalo é o \textit{flooding}, ou inundação, de mensagens na rede,
 gerando um tráfego exponencial $O(d^k)$, onde $d$ é o número de conexões e
 $k$ o TTL. Em uma rede com milhões de nós a internet dos usuários poderia
 ser consumida apenas com tráfego de terceiros.
 
-Almejando o controle do flooding, foram introduzidos o conceito de super
-nós, uma arquitetura semi-híbrida \cite{saroiu2002}. Esses super nós faziam
-a busca (o flooding) entre eles, que possuíam muitos IPs dinâmicos usados
+Almejando o controle do \textit{flooding}, foram introduzidos o conceito de super
+nós, uma arquitetura semi-híbrida \cite{saroiu2002,yanggarciamolina2003,liang2006}. Esses super nós faziam
+a busca (o \textit{flooding}) entre eles, que possuíam muitos IPs dinâmicos usados
 para direcionar o fluxo otimizado da mensagem. Como exemplo, pode-se
-imaginar uma carta enviada pelos correios. Ao invés de cada vizinho
+imaginar uma carta enviada pelos correios. Em vez de cada vizinho
 perguntar para os do lado se aquela é a casa correta, apenas as primeiras
 casas de cada rua se comunicam, e elas sabem quais casas têm em suas ruas.
 No momento em que uma dessas primeiras casas avisa que conhece a casa alvo,
 a primeira casa conta diretamente o endereço dela para o envio da carta,
 criando-se um caminho muito mais direto até achar a casa correta.
 
+\subsection{P2P de Terceira Geração: Redes Estruturadas, BitTorrent e DHTs (Kademlia)}
+
 As redes P2P de terceira geração, criadas por Bram Cohen em 2001, foram
 popularizadas por clientes de soluções como utorrent \cite{cohen2003}. O
 bittorrent revolucionou a transferência de dados ao abandonar o modelo
 vigente, o qual enviava arquivos inteiros de um nodo a outro. A
-fragmentação em blocos, ou pieces, é definida pela divisão em pequenos
+fragmentação em blocos, ou \textit{pieces}, é definida pela divisão em pequenos
 blocos, um usuário não precisa esperar o download terminar para começar a
 enviar dados. Enquanto baixa o bloco B de usuário 1, envia o bloco A que já
 detém para o usuário 2.
 
 A verdadeira descentralização do bittorrent veio à tona somente com o
-surgimento das DHTs, ou distributed hash tables, em especial o protocolo
+surgimento das DHTs, ou \textit{distributed hash tables}, em especial o protocolo
 Kademlia \cite{maymounkovmazieres2002}, que permitiu a operação sem
 rastreamento do bittorrent. Em vez de depender de super nós ou inundações
 cegas, o Kademlia organiza a rede atribuindo um identificador numérico
-único (hash de 160 bits) tanto para os nós quanto para os arquivos. A
+único (\textit{hash} de 160 bits) tanto para os nós quanto para os arquivos. A
 localização de um dado é feita calculando uma ``distância lógica''
 matemática entre esses identificadores por meio da operação XOR. Para
 visualizar o funcionamento de uma DHT, pode-se imaginar um grande catálogo
@@ -177,41 +189,183 @@ alguém ainda mais próximo, afunilando a busca rapidamente até alcançar o
 detentor do dado. Esse roteamento estruturado garante que a busca por um
 arquivo em uma rede com milhões de nós seja concluída em apenas $O(\log N)$
 saltos de mensagens, eliminando completamente a tempestade de tráfego
-(flooding) característica das redes de segunda geração.
+(\textit{flooding}) característica das redes de segunda geração.
 
-As distributed hash tables na terceira geração das redes P2P foram um
+\section{Sincronização de Estado Mutável em Tempo Real}
+
+\subsection{A Limitação dos Dados Estáticos em Redes P2P Tradicionais}
+
+As \textit{distributed hash tables} na terceira geração das redes P2P foram um
 incontestável sucesso. A distribuição massiva de dados descentralizados em
 blocos entre múltiplos milhões de usuários foi alcançada depois de
 inúmeros avanços e superações de problemas relacionados a hardware, SO e
 redes de computadores \cite{maymounkovmazieres2002,cohen2003}. Entretanto,
 essas grandes redes foram projetadas sob a premissa de uma imutabilidade de
-dados, um arquivo MP3, ou um vídeo, não mudam de tempos em tempos, seu hash
-sempre será aquele, a depender do algoritmo utilizado. Um outro hash
-representa um arquivo completamente diferente, sempre. Por outro lado, os
-sistemas interativos modernos não são imutáveis, eles mudam rapidamente e
-repetidamente, e exigem a alteração constante e simultânea do estado
-daquele arquivo, board, ferramenta por múltiplos usuários
-\cite{kleppmann2019}.
+dados, um arquivo MP3, ou um vídeo, não mudam de tempos em tempos, seu \textit{hash}
+sempre será aquele, a depender do algoritmo utilizado. Um outro \textit{hash}
+representa um arquivo completamente diferente, sempre.
+
+As redes de terceira geração, embora muito bem-sucedidas e evoluídas para a
+época, não foram projetadas para lidar com dados tão mutáveis. Elas utilizavam um
+modelo mental chamado de \textit{Single-Writer / Multi-Reader} (SWMR), ou seja, um único
+escritor e múltiplos leitores. Um arquivo MP3, por exemplo, é escrito pelo usuário que
+o possui, e todos os outros usuários apenas leem esse arquivo, a rede P2P precisa resolver
+apenas o problema da distribuição eficiente de leitura (\textit{Multi-Reader}). No início dos anos 2000,
+grandes empresas, como a Google, desenvolveram aplicações web colaborativas, os quais não
+poderiam ser regidos pelo modelo SWMR, pois múltiplos usuários poderiam alterar o mesmo dado
+ao mesmo tempo. Esses editores operavam sob o modelo \textit{Multi-Writer / Multi-Reader} (MWMR).
+
+A Web 2.0 precisou, então, resolver o problema da edição colaborativa em tempo real no fim dos
+anos 2000, impulsionada pelo Google Docs e Etherpad. A indústria respondeu adotando o paradigma
+\textit{Operational Transformation}, OT \cite{ellisgibbs1989}. Em vez de enviar um dado por inteiro, o OT envia apenas as operações
+realizadas sobre o dado. Quando elas ocorrem concorrentemente, o OT passa as operações por uma função
+matemática de transformação $T(O_1,O_2)$, que ajusta as posições e índices da segunda operação para que ela
+faça sentido com base no fato de que $O_1$ já existia \cite{sunellis1998}.
+
+O OT foi implementado em arquiteturas centralizadas, pois era onde as grandes empresas detinham suas soluções
+para ambientes colaborativos \cite{nichols1995}. Contudo, ele se torna complexo e quebradiço em redes P2P descentralizadas.
+\begin{itemize}
+    \item A dependência de ordenação global síncrona, torna extremamente difícil e pesado determinar o estado correto
+    das operações concorrentes, exigindo algoritmos de consenso distribuídos.
+
+    \item A explosão de combinação de estados em uma P2P com múltiplos nós, exige que cada nó implemente propriedades
+    matemáticas, conhecidas como \textit{Transformation Properties} \cite{ressel1996}. Manter essas propriedades para cenários com três ou mais
+    nós sem uma autoridade central provou ser cientificamente e praticamente inviável, levando a falhas onde o
+    texto ou estado final divergia permanentemente entre as réplicas \cite{imine2003,oster2006}.
+
+    \item O alto custo de memória histórica, pois cada nó precisa manter um histórico de todas as operações realizadas,
+     para que possa aplicar as transformações corretas em caso de divergência. Inviabilizando o uso para execução nos
+     computadores pessoais e celulares da época.
+\end{itemize}
+
+\subsection{Ausência de Relógio Global, Causalidade, Relógios Lógicos e Vetoriais}
+
+A subseção anterior descreve o problema de divergência de estados concorrentes, não sendo possível saber qual evento foi
+realizado primeiro, ou se eles ocorreram simultaneamente. Soma-se a isso a ausência de um relógio global e a incapacidade de se confiar
+em um relógio local, cujo cristal de quartzo sofre desvios de frequência imprevisíveis
+em relação a outros computadores \cite{tanenbaumvansteen2007}. O relógio físico de um sistema operacional, seu \textit{timestamp}, por assim dizer,
+pode estar adiantado e, em estratégias do tipo \textit{last-write-wins}, fazer com que seu evento sobrescreva um evento posterior, cujo \textit{timestamp} era menor \cite{kleppmann2017}. Também há problemas
+relacionados com a latência imprevisível da rede, impedindo precisão absoluta de milissegundos \cite{mills1991}.
+
+Uma possível solução para esse problema é pensar em causalidade, em vez de adivinhar qual evento vem primeiro.
+A relação \textit{Happened-Before} foi formulada por Leslie Lamport em 1978 \cite{lamport1978}, e define que um evento $a$ aconteceu
+antes de um evento $b$, denotado $a \rightarrow b$, se:
+\begin{itemize}
+    \item Ambos os eventos ocorreram no mesmo processo e $a$ ocorreu antes de $b$;
+    \item O evento $a$ é o envio de uma mensagem e o evento $b$ é o recebimento da mesma mensagem;
+    \item Existe um evento $c$ tal que $a \rightarrow c$ e $c \rightarrow b$.
+\end{itemize}
+
+Para implementar essa relação, Lamport propôs os relógios lógicos. Cada nó possui um número inteiro local (L) que é sempre
+incrementado na realização de um evento, garantindo a causalidade localmente \cite{lamport1978}. Porém, esse número precisa ser anexado ao
+envio de mensagens e, ao receber mensagens, o nó precisa atualizar seu relógio com o valor máximo entre o recebido e o interno,
+acrescido de 1. A limitação dessa solução é que, se $a \rightarrow b$, então $L(a) < L(b)$, mas o inverso não é garantido:
+torna-se impossível distinguir, apenas pelos relógios, eventos causalmente relacionados de eventos concorrentes entre diferentes nodos \cite{fidge1988,mattern1989}.
+
+Para resolver as limitações dos relógios de Lamport, foram propostos os \textit{Vector Clocks} (VC) \cite{fidge1988,mattern1989}. Cada nó mantém
+um vetor de inteiros, com tamanho igual ao número de nós na rede. Cada posição do vetor representa o contador lógico de cada nó. Ao realizar
+um evento local, o nó incrementa sua própria posição no vetor. Ao enviar uma mensagem, o nó anexa seu vetor atual. Ao receber uma mensagem,
+o nó atualiza seu vetor tomando o máximo, posição a posição, entre seu vetor e o vetor recebido e, em seguida, incrementa sua própria posição, garantindo a preservação da causalidade entre eventos concorrentes.
+Isso garante uma ordem parcial de causalidade entre os eventos de múltiplos nodos, direta ou indiretamente:
+\begin{itemize}
+    \item Se $a \rightarrow b$ pelas duas primeiras regras da relação \textit{Happened-Before}, então B é diretamente dependente de A.
+    \item Se $a \rightarrow c$ e $c \rightarrow b$, então B é indiretamente dependente de A.
+\end{itemize}
+
+Para comparar dois eventos, comparam-se seus vetores posição a posição. Se todas as posições de $V(a)$ são menores ou iguais
+às de $V(b)$ e ao menos uma é estritamente menor, então $V(a) < V(b)$, o que ocorre se, e somente se, $a \rightarrow b$.
+Caso nem $V(a) \leq V(b)$ nem $V(b) \leq V(a)$, os eventos são concorrentes ($a \parallel b$), situação que os relógios
+de Lamport não eram capazes de identificar anteriormente \cite{mattern1989}.
+
+\subsection{O Dilema da Concorrência e Consistência Eventual Forte (SEC)}
 
 Em uma arquitetura P2P descentralizada, órfã de um servidor geral agindo
-como uma fonte única da verdade (Single Source of Truth), a sincronização
+como uma fonte única da verdade (\textit{Single Source of Truth}), a sincronização
 de dados em tempo real enfrenta o dilema da divergência de dados. Uma dada
 informação, alterada por dois usuários ao mesmo tempo, precisa ser
 sincronizada não só por ambos, mas também por toda a rede, que também pode
 estar alterando outros dados paralelamente. A latência e a ordenação dos
 fatos podem levar nodos distintos a terem versões diferentes da realidade,
 o que pode ser contornado com a reintrodução de um servidor central
-\cite{lamport1978,tanenbaumvansteen2007}. O problema é o custo com isso
-atrelado, isto é a reintrodução, também, de um ponto único de falha
-(Single Point Of Failure).
+\cite{tanenbaumvansteen2007}. O problema é o custo com isso
+atrelado, isto é, a reintrodução, também, de um ponto único de falha
+(\textit{Single Point of Failure}).
 
-Como uma alternativa para superar essas limitações sem recorrer ao modelo
-cliente-servidor, este trabalho propõe o desenvolvimento e análise de um
-Motor de Sincronização Descentralizada para Aplicações em Tempo Real. Para
-fundamentar e resolver o conflito de divergência sem autoridade central, o
-motor utiliza estruturas de dados específicas para consistência eventual,
-como Conflict-free Replicated Data Types (CRDTs) \cite{shapiro2011}. Para
-validar e avaliar o desempenho da solução em termos de latência,
-resiliência e concorrência, é desenvolvida uma Proof of Concept (PoC)
-focada na sincronização espacial de mapas interativos entre múltiplos
-usuários simultâneos.
+Os relógios lógicos vistos anteriormente permitem identificar a ordem causal e a concorrência entre eventos, mas não resolvem
+o conflito em si. Para garantir uma consistência forte, os nodos precisariam se coordenar, por meio de consenso ou de uma
+ordenação total das operações, aguardando a confirmação dos demais antes de aplicar cada alteração. Em redes com latências
+variáveis, essa espera se torna muito longa, destruindo a disponibilidade do sistema.
+
+O Teorema CAP, proposto como conjectura por Eric Brewer em 2000 \cite{brewer2000} e provado formalmente por Gilbert e
+Lynch em 2002 \cite{gilbertlynch2002}, descreve o dilema da
+consistência em sistemas distribuídos. Ele afirma que é impossível para um sistema distribuído fornecer
+simultaneamente mais de duas das três garantias: consistência (C), disponibilidade (A) e tolerância a partições (P).
+Para o caso das redes P2P, nas quais partições de rede são inevitáveis (P), a escolha, durante uma partição, é entre a consistência
+forte (C) e a disponibilidade (A) \cite{brewer2012}. A escolha de A garante a usabilidade pelo usuário, mas permite que os nodos
+divirjam temporariamente. Já a escolha de C garante o uso correto da rede, mas torna a experiência lenta
+ou indisponível. Mesmo na ausência de partições, há uma segunda troca, entre latência (L) e consistência (C), formalizada
+pelo modelo PACELC \cite{abadi2012}, que é justamente o cenário de redes P2P com latências variáveis.
+
+Em aplicações colaborativas em tempo real, costuma-se optar por AP, ou seja, a disponibilidade e tolerância a partições. Para lidar
+com a consistência, adota-se a consistência eventual (EC), que garante que todos os nodos eventualmente convergirão para o mesmo
+estado final, desde que não haja novas atualizações \cite{vogels2009}. A consistência eventual forte (SEC) vai além: quaisquer
+réplicas que tenham recebido o mesmo conjunto de atualizações estão imediatamente no mesmo estado, sem necessidade de reversões
+ou de coordenação entre os nodos \cite{shapiro2011}. Para isso, são utilizadas estruturas de
+dados específicas, como os Tipos de Dados Replicados Livres de Conflitos (CRDTs) \cite{shapiro2011}, que permitem a resolução de
+conflitos de forma descentralizada e sem a necessidade de um servidor central.
+
+\section{Estruturas de Dados para Resolução Descentralizada de Conflitos (CRDTs)}
+
+\subsection{Semirreticulados Superiores (\textit{Join-Semilattices}) e Propriedades Matemáticas}
+
+Lidar com divergências de estado em sistemas distribuídos sempre foi um dos principais impasses da área. No início dos anos 2000,
+essa comunidade provou o Teorema CAP \cite{brewer2000,gilbertlynch2002} e, com isso, a impossibilidade de se ter consistência
+forte, disponibilidade e tolerância a partições simultaneamente. O OT era direcionado para sistemas centralizados e quebrava em P2P \cite{oster2006},
+algoritmos de consenso tradicionais como Paxos \cite{lamport1998} e \textit{locks} forçavam os nós a conversarem entre si, prejudicando a disponibilidade
+e a latência das soluções. A resolução veio, novamente, mudando a estratégia de pensamento.
+
+Em vez de forçar a rede a concordar sobre a ordem de mensagens, a ideia era atribuir na própria estrutura de dados a capacidade e regras de fusão
+fundamentadas em propriedades algébricas. Garantindo isso, a ordem em que as mensagens chegavam pela rede parava de importar \cite{shapiro2011}. As três
+propriedades fundamentais são a comutatividade, associatividade e a idempotência.
+
+Comutatividade garante que a ordem de chegada e aplicações de alterações não importa, o resultado final será o mesmo. Associatividade garante
+que o agrupamento de múltiplos pacotes, por latência de rede, por exemplo, não importa, o resultado final também será o mesmo. Para finalizar, idempotência
+garante que a aplicação de uma alteração que o nó já possui não alterará o estado final.
+
+Essas propriedades não surgem por acaso. Nos CRDTs baseados em estado, os estados possíveis de uma réplica formam um semirreticulado
+superior (\textit{join-semilattice}), ou seja, um conjunto parcialmente ordenado no qual quaisquer dois estados possuem um supremo
+(\textit{least upper bound}), o menor estado que contém ambos. A operação de fusão (\textit{merge}) de dois estados é justamente esse supremo,
+que, por definição, é comutativo, associativo e idempotente. Além disso, cada alteração local só pode fazer o estado ``crescer'' nessa ordem,
+nunca retroceder \cite{shapiro2011}.
+
+A ideia, porém, não surgiu do zero. Algoritmos como o WOOT \cite{oster2006}, o Treedoc \cite{preguica2009} e o Logoot \cite{weiss2009}
+já exploravam estruturas comutativas para edição colaborativa em redes P2P. Com esses padrões matemáticos, Shapiro e sua equipe propuseram, comprovaram e criaram os Tipos de Dados Replicados Livres de Conflitos (CRDTs) \cite{shapiro2011},
+provando que era possível alcançar a SEC (consistência eventual forte) em sistemas distribuídos descentralizados, sem a necessidade de um servidor central.
+
+\subsection{Abordagens de CRDTs: \textit{State-based} (CvRDT), \textit{Operation-based} (CmRDT) e \textit{Delta-State}}
+
+Após a proposição de Shapiro, os CRDTs viraram objeto de estudo, assim como as primeiras redes P2P. Shapiro e sua equipe definiram duas abordagens equivalentes, já que uma consegue emular a outra
+\cite{shapiro2011}, e, anos depois, uma terceira foi proposta. A primeira, os \textit{State-based} CRDTs, ou CvRDTs (\textit{Convergent Replicated
+Data Types}), foi uma abordagem intuitiva, na qual, a cada alteração, o estado inteiro do CRDT era enviado para os demais nodos, que o fundiam
+com seu estado local por meio do \textit{merge}. Algo muito resiliente, pois, graças à idempotência, a rede podia perder, duplicar ou reordenar
+mensagens sem prejudicar a convergência. A desvantagem clara é o uso de largura de banda, um \textit{overhead} gigantesco a depender do tamanho do CRDT.
+
+A segunda, os \textit{Operation-based} CRDTs, ou CmRDTs (\textit{Commutative Replicated Data Types}), enviava apenas a operação realizada,
+reduzindo o \textit{overhead} de largura de banda. Em compensação, apenas as operações concorrentes precisavam comutar entre si. Entretanto, essa
+abordagem exigia que a rede entregasse todas as operações exatamente uma única vez e em ordem causal (\textit{causal broadcast}), caso contrário,
+o estado final divergiria permanentemente. Isso aumentou consideravelmente
+a complexidade na camada de rede do sistema \cite{shapiro2011comprehensive}.
+
+A terceira, os \textit{Delta-State} CRDTs, surgiu anos depois como um meio termo entre as duas abordagens anteriores. Em vez de enviar o estado inteiro (um grande peso para a rede, mas alta
+resiliência de consistência) ou apenas a operação (um peso baixo para a rede, mas alta complexidade de entrega), o \textit{Delta-State} CRDT envia apenas o \textit{delta}, ou seja,
+a diferença entre o estado anterior e o estado atual. Os \textit{deltas} também são elementos do semirreticulado, podendo ser agrupados e fundidos
+entre si antes do envio. Isso reduz o \textit{overhead} de largura de banda, mantendo a resiliência de consistência, pois o \textit{delta} é aplicado
+no estado local do nó pelo mesmo \textit{merge}. Ainda assim, para preservar a causalidade, é necessário um protocolo de sincronização entre os nós
+(\textit{anti-entropy}), garantindo que todos eventualmente convergirão para o mesmo estado final \cite{almeida2018}.
+
+Sobre essas abordagens foram construídos diversos tipos de CRDTs \cite{shapiro2011comprehensive}. Entre os mais comuns estão os contadores,
+como o G-Counter, que só pode ser incrementado, e o PN-Counter, que permite incrementos e decrementos; os registradores, como o LWW-Register
+(\textit{Last-Writer-Wins Register}), que mantém o valor da escrita mais recente; os conjuntos, como o OR-Set (\textit{Observed-Remove Set}),
+que permite adicionar e remover elementos de forma concorrente; e as sequências, como o RGA \cite{roh2011}, usadas na edição colaborativa
+de texto. Esses tipos podem ainda ser combinados em estruturas mais complexas, como mapas e documentos JSON, nos quais cada chave guarda
+outro CRDT \cite{kleppmannberesford2017}.
