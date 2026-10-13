@@ -1,176 +1,181 @@
-%% intro.tex
+%% chapters/intro.tex
 %%
-%% Copyright 2017 Evandro Coan
-%% Copyright 2012-2016 by abnTeX2 group at http://www.abntex.net.br/
-%%
-%% This work may be distributed and/or modified under the
-%% conditions of the LaTeX Project Public License, either version 1.3
-%% of this license or (at your option) any later version.
-%% The latest version of this license is in
-%%   http://www.latex-project.org/lppl.txt
-%% and version 1.3 or later is part of all distributions of LaTeX
-%% version 2005/12/01 or later.
-%%
-%% This work has the LPPL maintenance status `maintained'.
-%% The Current Maintainer of this work is the Evandro Coan.
-%%
-%% The last Maintainer of this work was the abnTeX2 team, led
-%% by Lauro César Araujo. Further information are available on
-%% https://www.abntex.net.br/
-%%
-%% This work consists of a bunch of files. But originally there ware 3 files
-%% which are renamed as follows:
-%% Renamed the `abntex2-modelo-include-comandos` to `chapters/chapter_1.tex`
-%% Renamed the `abntex2-modelo-trabalho-academico.tex` to `chapters/intro.tex`
-%% Renamed the `abntex2-modelo-references.bib` to `aftertext/modelo-ufsc-references.bib`
-%%
-%% This file was originally the main template file, however this main file was
-%% split into several new files, which are respectively drastically changed,
-%% except this files which contains most of the main documentation message.
-%%
-
-% ------------------------------------------------------------------------
-% ------------------------------------------------------------------------
-% abnTeX2: Modelo de Trabalho Academico (tese de doutorado, dissertacao de
-% mestrado e trabalhos monograficos em geral) em conformidade com
-% ABNT NBR 14724:2011: Informacao e documentacao - Trabalhos academicos -
-% Apresentacao
-% ------------------------------------------------------------------------
-% ------------------------------------------------------------------------
+%% Capítulo de Introdução -- conteúdo real do TCC de Guilherme Focassio dos
+%% Santos, migrado do documento Google Docs/Word original em 2026-10-07.
 
 % The \phantomsection command is needed to create a link to a place in the document that is not a
 % figure, equation, table, section, subsection, chapter, etc.
 % https://tex.stackexchange.com/questions/44088/when-do-i-need-to-invoke-phantomsection
 \phantomsection
 
-% https://tex.stackexchange.com/questions/5076/is-it-possible-to-keep-my-translation-together-with-original-text
 \chapter{\lang{Introduction}{Introdução}}
 \phantomsection
 
-A Tabela~\ref{tab:a_table_formatacao_de_texto} mostra  informações do modelo de teses da Biblioteca Universitária da UFSC (BU-UFSC).
+As redes Peer-to-peer estão na computação como conceito e aplicações desde os
+primórdios da ARPANET. Na verdade, a própria ARPANET poderia ser descrita como uma
+rede de comunicação entre nodos - ou “pares” - descentralizada (Crocker, 1969), o
+que se refletiu na própria criação da internet. A internet como conhecemos hoje é
+uma comunicação entre múltiplas máquinas, múltiplos pares, para envio e recebimento
+de recursos. Longe de ser uma novidade recente, o conceito é maduro e fundamenta a
+comunicação entre sistemas desde a década de 1960.
 
-% What does [t] and [ht] mean?
-% https://tex.stackexchange.com/questions/8652/what-does-t-and-ht-mean
-%
-% How can I get rid of the LaTeX warning: Float too large for page?
-% https://tex.stackexchange.com/questions/36252/how-can-i-get-rid-of-the-latex-warning-float-too-large-for-page
-%
-% "warning: Text page X contains only floats" How to suppress this warning?
-% https://tex.stackexchange.com/questions/223149/warning-text-page-x-contains-only-floats-how-to-suppress-this-warning
-%
-% Make a table span multiple pages
-% https://tex.stackexchange.com/questions/26462/make-a-table-span-multiple-pages
-%
-% How to make the longtable to work with centering & caption on memoir class?
-% https://tex.stackexchange.com/questions/386541/how-to-make-the-longtable-to-work-with-centering-caption-on-memoir-class
-%
-% How to fix this Package array Error: Only one column-spec allowed?
-% https://tex.stackexchange.com/questions/367069/how-to-fix-this-package-array-error-only-one-column-spec-allowed
-%
-% How to auto adjust my last table column width, and why is there Underfull \vbox badness on this table?
-% https://tex.stackexchange.com/questions/387238/how-to-auto-adjust-my-last-table-column-width-and-why-is-there-underfull-vbox/387251
-\setlength\extrarowheight{2pt}
-\begin{tabularx}{\linewidth}{>{\RaggedRight}p{3cm}|>{\arraybackslash}X}
+O conceito evoluiu ao longo de três grandes gerações de redes peer-to-peer, sempre
+adicionando ou melhorando a solução anterior. Na primeira geração houve a primeira
+grande implementação dessa arquitetura para resolver o problema de transferência de
+mídias digitais, ainda com servidores centrais direcionando o tráfego com tabelas de
+índices. A segunda geração verdadeiramente descentralizou a rede, não dependendo mais
+de nenhum servidor central. Então, a terceira geração de redes eliminou os principais
+problemas de flooding, introduziu o upload em chunks e muitos outros problemas de suas
+antecessoras, se tornando um sucesso global.
 
-\caption[Formatação do texto]{Formatação do texto \showfont}
-\label{tab:a_table_formatacao_de_texto} \\
-\hline
-\endfirsthead
+Entretanto, essa evolução se restringiu ao envio de arquivos estáticos. Arquivos nunca
+mudam entre um envio e outro, uma música sempre será o mesmo file, terá o mesmo hash, os
+mesmos metadados. Para as aplicações do mundo moderno, pautadas no envio e
+recebimento massivo de dados de aplicações em tempo real, as redes peer-to-peer
+enfrentam um novo grande desafio: a sincronização de dados em tempo real.
 
-% How to set font size of footnotes correctly in memoir?
-% https://tex.stackexchange.com/questions/213927/how-to-set-font-size-of-footnotes-correctly-in-memoir
-\multicolumn{2}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{\ufsccaptionsize\tablename~\thetable:
-Formatação do texto (continuação) \showfont} \\
-\hline
-\endhead
+\section{Objetivos}
 
-% Set multicolumn width to default table width
-% https://tex.stackexchange.com/questions/99326/set-multicolumn-width-to-default-table-width
-\hline
-\multicolumn{2}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{\footnotesize continua na próxima página\protect\englishword{\showfont}}
-\endfoot
+Esta seção busca formalizar os objetivos do presente trabalho.
 
-\hline
-\multicolumn{2}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{\fonte{O autor -- \showfont} }
-\endlastfoot
-    Cor                          & Branco - \englishword{\showfont}                                 \\ \hline
-    Formato do papel             & A4                                                               \\ \hline
-    Gramatura                    & 75                                                               \\ \hline
-    Impressão                    & Frente e verso                                                   \\ \hline
-    Margens                      & Direita e superior 3, Inferior e esquerda: 2.                    \\ \hline
-    Cabeçalho                    & 0,7                                                              \\ \hline
-    Rodapé                       & 0,7                                                              \\ \hline
-    Paginação                    & Externa                                                          \\ \hline
-    Alinhamento vertical         & Superior                                                         \\ \hline
-    Alinhamento do texto         & Justificado                                                      \\ \hline
-    Fonte sugerida               & Times New Roman                                                  \\ \hline
-    Tamanho da fonte             & 12 para o texto incluindo os títulos das seções e subseções.
-                                   As citações com mais de três linhas as legendas das ilustrações
-                                   e tabelas, fonte 10.                                             \\ \hline
-    Espaçamento entre linhas     & Um e meio (1,5)                                                  \\ \hline
-    Espaçamento entre parágrafos & Anterior 0,0; Posterior 0,0                                      \\ \hline
-    Numeração da seção           & As seções  primárias devem  começar  sempre em páginas ímpares.
-                                   Deixar um espaço (simples) entre o título da seção e o texto e
-                                   entre o texto e o título da subseção.                            \\ \hline
+\subsection{Objetivos gerais}
 
-\end{tabularx}
+Este trabalho tem como objetivo projetar, implementar e avaliar
+experimentalmente um motor de sincronização de estado descentralizado
+(Peer-to-Peer), de baixo nível e agnóstico a domínio, visando garantir a
+Consistência Eventual Forte (SEC) em aplicações de tempo real por meio da
+integração de Tipos de Dados Replicados Livres de Conflitos (CRDTs) e
+ordenação lógica de eventos.
 
+\subsection{Objetivos específicos}
 
-\begin{figure}
-    \caption{Exemplo de figura}
-    \label{fig:ex01}
-    \centering
-    \includegraphics[width=\linewidth]{pictures/ex01}
-\fonte{o autor -- \showfont}
-\end{figure}
+\begin{itemize}
+    \item Estudar os fundamentos teóricos de consistência em sistemas
+    distribuídos descentralizados, analisando os conceitos de Consistência
+    Eventual Forte (SEC), Tipos de Dados Replicados Livres de Conflitos
+    (CRDTs), relógios lógicos e protocolos de fofoca (gossip);
 
+    \item Analisar os requisitos técnicos e desafios práticos para o
+    desenvolvimento de sistemas de alta performance em tempo real, mapeando
+    os requisitos de paralelismo, controle de concorrência, latência e
+    segurança no ciclo de vida da memória;
 
-Por exemplo, na \figref{fig:ex01}, tem-se...
+    \item Projetar a arquitetura modular de baixo nível do motor de
+    sincronização, definindo os fluxos de entrada e saída de rede
+    assíncrona, enquadramento (framing) de dados, controle de concorrência
+    multi-thread e o modelo de persistência volátil;
 
-\begin{figure}
-    \caption{Exemplo de aquisição}
-    \label{fig:tek0009}
-    \centering
-    \includegraphics[width=0.9\linewidth]{pictures/tek0009}
-    \fonte{o autor -- \showfont}
-\end{figure}
+    \item Implementar o middleware (motor de sincronização) focando na
+    performance de execução, empregando mecanismos eficientes de
+    serialização de dados (zero-copy) e estruturas de dados otimizadas
+    para manipulação concorrente;
 
-Este documento e seu código-fonte são exemplos de referência de uso da classe
-\textsf{abntex2} e do pacote \textsf{abntex2cite}. O documento
-exemplifica a elaboração de trabalho acadêmico (tese, dissertação e outros do
-gênero) produzido conforme a ABNT NBR 14724:2011 \emph{Informação e documentação
-- Trabalhos acadêmicos - Apresentação}.
+    \item Desenvolver um protótipo funcional de tempo real (aplicação de
+    prova de conceito) que consuma as interfaces expostas pelo motor,
+    demonstrando na prática o comportamento dinâmico e a natureza
+    agnóstica do sistema;
 
-A expressão ``Modelo Canônico'' é utilizada para indicar que \abnTeX{} não é
-modelo específico de nenhuma universidade ou instituição, mas que implementa tão
-somente os requisitos das normas da ABNT. Uma lista completa das normas
-observadas pelo \abnTeX{} é apresentada em \textcite{abntex2classe}.
+    \item Avaliar a solução proposta por meio de testes experimentais,
+    analisando métricas de tempo de convergência de réplicas, taxa de
+    transferência de rede (payload de fofoca), latência induzida e
+    consumo de recursos de processamento e memória;
 
-Sinta-se convidado a participar do projeto \abnTeX{}! Acesse o site do projeto em
-\url{http://abntex2.googlecode.com/}. Também fique livre para conhecer,
-estudar, alterar e redistribuir o trabalho do \abnTeX{}, desde que os arquivos
-modificados tenham seus nomes alterados e que os créditos sejam dados aos
-autores originais, nos termos da ``The \LaTeX{} Project Public
-License''\footnote{\url{http://www.latex-project.org/lppl.txt}}.
+    \item Documentar as limitações de design identificadas, os
+    aprendizados de engenharia de software aplicados a sistemas
+    distribuídos e as futuras direções para evolução da infraestrutura
+    proposta.
+\end{itemize}
 
-Encorajamos que sejam realizadas customizações específicas deste exemplo para
-universidades e outras instituições --- como capas, folha de aprovação, etc.
-Porém, recomendamos que ao invés de se alterar diretamente os arquivos do
-\abnTeX{}, distribua-se arquivos com as respectivas customizações.
-Isso permite que futuras versões do \abnTeX{}~não se tornem automaticamente
-incompatíveis com as customizações promovidas. Consulte
-\textcite{abntex2-wiki-como-customizar} par mais informações.
+\section{Escopo do trabalho}
 
-Este documento deve ser utilizado como complemento dos manuais do \abnTeX{}
-\cite{abntex2classe,abntex2cite,abntex2cite-alf} e da classe \textsf{memoir}
-\cite{memoir}.
+\section{Método de pesquisa}
 
-Esperamos, sinceramente, que o \abnTeX{} aprimore a qualidade do trabalho que
-você produzirá, de modo que o principal esforço seja concentrado no principal:
-na contribuição científica.
+Este trabalho utiliza uma pesquisa aplicada, com foco em investigar um
+problema prático da engenharia de software distribuída: a viabilidade e os
+desafios de manter estados consistentes em redes de tempo real
+descentralizadas sem coordenação síncrona global. A abordagem adotada é
+experimental, baseada no projeto, desenvolvimento e avaliação empírica de
+um protótipo funcional.
 
-Equipe \abnTeX{}
+Inicialmente, será realizado um estudo teórico aprofundado a respeito das
+bases matemáticas de CRDTs (com foco em semilattices superiores e mutações
+baseadas em delta), relógios de Lamport, relógios vetoriais e algoritmos de
+disseminação epidêmica (gossip protocols). Além disso, serão revisadas as
+bibliotecas e técnicas modernas de programação de sockets de rede
+assíncronos e de alta concorrência na linguagem de programação que será
+adotada.
 
-Lauro César Araujo
+Em seguida, será modelada e documentada a arquitetura lógica do motor de
+sincronização. Esse projeto envolverá o mapeamento das dependências entre
+os módulos de rede (camada de transporte), de persistência do estado da
+réplica, de ordenação lógica de eventos e de difusão de atualizações.
 
+Após a etapa de projeto arquitetural, será desenvolvido o motor de
+sincronização (middleware) sob uma estrutura multi-thread otimizada,
+implementando as classes e interfaces correspondentes aos CRDTs e relógios
+lógicos de forma genérica. Concomitantemente, será desenvolvida uma
+aplicação de prova de conceito (como um simulador distribuído simples ou
+um quadro colaborativo interativo) cuja única responsabilidade será
+manipular o estado através do middleware, validando sua natureza agnóstica
+a domínio.
 
+Por fim, serão conduzidos testes práticos e ensaios experimentais sob
+diferentes cenários de carga de trabalho e concorrência induzida. Esses
+ensaios buscarão caracterizar quantitativamente a performance da solução
+proposta, avaliando as métricas de tempo total de convergência do estado
+de todas as réplicas ativas, taxa de pacotes descartados por falta de
+causalidade, consumo de banda de rede (bits/segundo) e consumo de
+processador e memória RAM nos nós da rede simulada. Os resultados obtidos
+guiarão a redação das conclusões e limitações técnicas do sistema.
+
+\section{O uso de Inteligência Artificial neste trabalho}
+
+Em conformidade com as boas práticas de transparência acadêmica,
+esclarece-se nesta seção como ferramentas de Inteligência Artificial (IA)
+foram empregadas na elaboração deste trabalho.
+
+Um assistente de IA (Claude, da Anthropic, operando através da ferramenta
+Claude Code) foi utilizado como apoio em tarefas de natureza instrumental e
+editorial, e não na concepção científica da pesquisa. Especificamente, a
+ferramenta auxiliou:
+
+\begin{itemize}
+    \item Na migração do texto deste documento, originalmente redigido pelo
+    autor em processador de texto, para o template \LaTeX{} da UFSC em
+    conformidade com as normas ABNT, preservando o conteúdo e a redação
+    originais do autor;
+
+    \item Na configuração do ambiente de desenvolvimento \LaTeX{} local
+    (distribuição TeX Live, editor, extensões) e do fluxo de versionamento
+    do projeto via \texttt{git};
+
+    \item Na formatação das referências bibliográficas citadas neste
+    capítulo no formato BibTeX e na inserção dos respectivos comandos de
+    citação no texto;
+
+    \item Na organização geral do repositório do projeto, incluindo a
+    remoção de conteúdo de demonstração herdado do template original.
+\end{itemize}
+
+A definição do tema de pesquisa, a revisão da literatura, a redação do
+conteúdo técnico e científico, as decisões metodológicas e as conclusões
+apresentadas ao longo deste trabalho são de autoria e responsabilidade do
+autor. O uso da IA restringiu-se, portanto, a um papel de ferramenta de
+produtividade na produção do documento, análogo ao uso de um editor de
+texto ou de um verificador ortográfico, sem substituir o julgamento
+científico ou a autoria intelectual da pesquisa.
+
+\section{Organização do trabalho}
+
+Além desta introdução, o restante deste trabalho está organizado da
+seguinte forma: o capítulo de Desenvolvimento apresenta a fundamentação
+teórica sobre consistência em sistemas distribuídos descentralizados --
+CRDTs, relógios lógicos e protocolos de disseminação epidêmica -- seguida
+do projeto da arquitetura modular do motor de sincronização e dos detalhes
+de sua implementação, com foco em desempenho e concorrência. Em seguida, é
+apresentado o protótipo de prova de conceito desenvolvido sobre o motor, e
+a avaliação experimental conduzida sobre ele, caracterizando métricas de
+convergência, latência, tráfego de rede e consumo de recursos sob
+diferentes cenários de carga. Por fim, o capítulo de Conclusão retoma os
+objetivos definidos neste capítulo, discute os resultados obtidos e as
+limitações identificadas, e aponta direções para trabalhos futuros.

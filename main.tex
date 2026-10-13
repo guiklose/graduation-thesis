@@ -87,7 +87,7 @@ section=TITLE, % Título de seções em caixa alta
 \coordenador[\lang{Coordinator}{Coordenador(a)}]{\brazilword{Nome do Coordenador(a)}, \lang{Phd.}{Dr.}}
 
 % FIXME: Local da sua defesa
-\local{\brazilword{Florianópolis, Santa Catarina} -- \lang{Brazil}{Brasil}}
+\local{\brazilword{Florianópolis, Santa Catarina, }\lang{Brazil}{Brasil}}
 
 \ano{2027}
 \biblioteca{\lang{University Library}{Biblioteca Universitária}}
@@ -246,14 +246,14 @@ section=TITLE, % Título de seções em caixa alta
     \ifforcedinclude\else\part{\lang{Research}{Pesquisa}}\fi
     \label{primeira_parte}
 
-    % Introdução -- em andamento na branch "introduction" (stashada por enquanto)
-    % \include{chapters/intro}
+    \include{chapters/intro}
+
+    \include{chapters/fundamentacao_teorica}
 
     % Finaliza a parte no bookmark do PDF para que se inicie o bookmark na raiz
     % e adiciona espaço de parte no Sumário
     \phantompart
 
-    % Conclusão (outro exemplo de capítulo sem numeração e presente no sumário)
     \include{chapters/conclusion}
 
     % ELEMENTOS PÓS-TEXTUAIS

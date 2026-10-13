@@ -1,0 +1,217 @@
+\phantomsection
+\chapter{\lang{Theoretical Background}{Fundamentação Teórica}}
+\phantomsection
+
+As redes Peer-to-peer estão na computação como conceito e aplicações desde os
+primórdios da ARPANET. Na verdade, a própria ARPANET poderia ser descrita
+como uma rede de comunicação entre nodos -- ou ``pares'' -- descentralizada
+\cite{crocker1969}, o que se refletiu na própria criação da internet. A
+internet como conhecemos hoje é uma comunicação entre múltiplas máquinas,
+múltiplos pares, para envio e recebimento de recursos. Longe de ser uma
+novidade recente, o conceito é maduro e fundamenta a comunicação entre
+sistemas desde a década de 1960.
+
+Nos anos 90 ocorreu uma transição do que se conhecia anteriormente como
+ARPANET para a World Wide Web, trazendo com a mudança milhões de usuários
+leigos buscando e consumindo informações de uma maneira nunca antes vista na
+história da humanidade. Nesse aspecto, um modelo vigorou, dominou e se
+consolidou como o padrão desse novo ambiente: o modelo cliente-servidor
+\cite{fieldingtaylor2000,tanenbaumvansteen2007}. Para entendermos os
+principais motivos do sucesso desse novo modelo, precisamos repensar algumas
+características das redes peer-to-peer que precisariam ser adaptadas para
+essa nova realidade.
+
+Redes peer-to-peer trocam mensagens para definir qual a versão ``correta''
+-- muitas vezes subjetiva -- de um pacote, dado ou informação. Com o advento
+da internet, milhões de novas máquinas começaram a processar, enviar e
+receber esses pacotes/informações a todo momento. Isso, na época, foi um
+grande problema relacionado à descoberta e busca de recursos entre os
+nodos, saber onde o recurso ou arquivo estava para fazer o upload ou
+download \cite{ripeanu2001}.
+
+Naquela época, muitas residências tinham altas -- para a época -- taxas de
+download, mas baixíssimas taxas de upload. Fazer todas essas máquinas,
+algumas vezes rápidas, outras lentas, responderem requisições teria uma
+latência e velocidade muito inferior a simplesmente um data center com
+links dedicados de alta velocidade, capazes de responder milhares de
+clientes passivos \cite{saroiu2002}.
+
+Somado a isso, os computadores pessoais não precisavam de IP público
+estático, portas abertas e nem processar continuamente, garantindo a
+simplicidade do modelo no lado do cliente \cite{saltzer1984}.
+
+A adoção do modelo cliente-servidor viabilizou a difusão rápida da Web em
+seus primeiros anos. Entretanto, no final da década de 1990, uma nova
+tendência surgiu: a explosão de mídias digitais, impulsionada pela
+popularização dos arquivos de áudio em MP3. A procura e compartilhamento de
+músicas se espalhou e trouxe consigo um aumento no número de bytes
+trafegados. A rede não estava mais apenas baixando e fazendo upload de HTML
+e arquivos de textos de poucos kbytes, os arquivos de músicas elevaram esse
+patamar para os megabytes, causando a explosão das contas das
+infraestruturas dos servidores centrais \cite{saroiu2002}. Para ilustrar
+esse gargalo de largura de banda (egress bandwidth), em um cenário
+hipotético no qual um milhão de usuários querem baixar um HTML de 20kbytes
+o servidor precisará lidar com cerca de 20 Gigabytes de dados de saída, com
+um arquivo MP3 de 5MB no mesmo servidor, seria necessária uma demanda
+massiva de 5 Terabytes, um volume desproporcional para a infraestrutura da
+época.
+
+O volume de dados massivo forçava os servidores centrais a um limite o
+qual eles não eram capazes de suportar sem encarecer demais o serviço. A
+centralização do estado e dos recursos fez com que a disponibilidade de
+todo o sistema ficasse refém do servidor central, um único ponto de falha
+(Single Point of Failure, ou SPOF) \cite{tanenbaumvansteen2007}. Isso gerou
+flash crowds (picos de tráfego) que derrubaram servidores inteiros por
+exaustão de CPU, indisponibilizando o serviço para todos os usuários
+\cite{padmanabhan2002}.
+
+Os pontos negativos do modelo cliente-servidor vieram à tona, escalabilidade,
+disponibilidade, custo e manutenção eram apenas alguns deles. A crise criou
+o cenário perfeito para o ressurgimento das redes Peer-to-peer, que
+reemergiam como uma alternativa viável e escalável para o problema, em 1999
+surge o Napster.
+
+Criado em 1999 por Shawn Fanning e Sean Parker, o Napster como solução de
+software provou a viabilidade de uma implementação P2P em larga escala
+\cite{saroiu2002}. Sua implementação foi realizada para resolver um
+problema comum da época: a dificuldade de baixar arquivos mp3, como
+músicas, de sites estáticos ou canais de IRC da época.
+
+O Napster resolveu o gargalo financeiro e o de largura de banda do modelo
+cliente-servidor na distribuição desses arquivos, na época, pesados. Por
+exemplo, para uma empresa distribuir um vídeo de 1 Terabyte de dados, seria
+necessário 1 Terabyte de egress bandwidth dos data centers. Com o Napster
+essa infraestrutura de rede, hardware e conexão é repassada para os
+próprios usuários da rede, os nodos ou peers. Os usuários que querem baixar
+um determinado arquivo fazem essa busca pela rede até encontrar alguém o
+servindo. A partir disso, cria-se uma conexão entre os dois, onde os
+recursos computacionais de ambos são usados para o compartilhamento,
+reduzindo, e muito, o estresse das máquinas centrais dos data centers
+\cite{adarhuberman2000}.
+
+Mesmo com tudo isso, o Napster ainda não era uma rede totalmente
+descentralizada. Ao invés disso, atuava como uma arquitetura híbrida, ou
+P2P de primeira geração, combinando elementos de centralização com
+transferência direta de dados \cite{schollmeier2001}. Na execução do
+programa, o cliente se conecta com servidores centrais mantidos pelo
+Napster. O cliente, então, envia a lista de todos os MP3 armazenados para
+compartilhamento, endereço IP e porta de conexão. Os servidores centrais do
+Napster mantinham em memória índices globais e dinâmicos em tempo real,
+mapeando milhões de arquivos com respectivos endereços de IP. Quando um
+usuário procurava por uma música, pelo nome, por exemplo, essa pesquisa era
+convertida em uma query e enviada para o servidor central. O servidor
+pesquisava em suas tabelas pelo índice e retornava uma lista contando IPs
+de usuários que estavam provendo aquele conteúdo e suas velocidades de
+conexão (upload e download). Assim que o usuário escolhia a fonte, a
+conexão entre ele e o servidor central acabava e começava a conexão TCP
+direta entre os nodos/peers. O arquivo requerido pelo usuário consumidor
+era, então, enviado do usuário provedor para o seu computador. Embora o
+problema do gargalo tenha sido resolvido, dois pontos fracos principais
+finalizaram as operações do Napster em 2001:
+
+\begin{itemize}
+    \item Caso a infraestrutura dos servidores centrais, detentores das
+    tabelas de índices, fosse derrubada, toda a rede como um todo parava de
+    funcionar. Algo análogo a um motorista em uma cidade desconhecida com
+    GPS desligado. Os servidores centrais eram o novo ponto de falha única
+    (SPOF -- Single point of failure) do sistema \cite{tanenbaumvansteen2007};
+
+    \item Esse ponto único de falha foi justamente o foco principal do
+    ataque contra o Napster realizado por cortes e juízes americanos, que
+    definiram a derrubada desses servidores. Com os servidores fora do ar,
+    a rede perdia o seu propósito.
+\end{itemize}
+
+Após a queda do Napster, uma rede P2P de primeira geração (híbridas com
+servidor central), como ficou conhecida posteriormente, surgiram protocolos
+100\% descentralizados e não estruturados, como o Gnutella
+\cite{ripeanu2001}. Redes P2P de segunda geração são marcadas,
+principalmente, pela eliminação do servidor central usando flooding de
+mensagens, não existia servidor central nem tabela de índice. Quando um
+peer quer um arquivo, ele envia mensagens diretamente para seus nodos
+vizinhos, que fazem o mesmo, consecutivamente, até o nodo detentor do
+arquivo ser encontrado. Uma vez encontrado, uma conexão direta é
+estabelecida entre ambos para upload ou download do arquivo, a depender da
+ponta. O claro gargalo é o flooding, ou inundação, de mensagens na rede,
+gerando um tráfego exponencial $O(d^k)$, onde $d$ é o número de conexões e
+$k$ o TTL. Em uma rede com milhões de nós a internet dos usuários poderia
+ser consumida apenas com tráfego de terceiros.
+
+Almejando o controle do flooding, foram introduzidos o conceito de super
+nós, uma arquitetura semi-híbrida \cite{saroiu2002}. Esses super nós faziam
+a busca (o flooding) entre eles, que possuíam muitos IPs dinâmicos usados
+para direcionar o fluxo otimizado da mensagem. Como exemplo, pode-se
+imaginar uma carta enviada pelos correios. Ao invés de cada vizinho
+perguntar para os do lado se aquela é a casa correta, apenas as primeiras
+casas de cada rua se comunicam, e elas sabem quais casas têm em suas ruas.
+No momento em que uma dessas primeiras casas avisa que conhece a casa alvo,
+a primeira casa conta diretamente o endereço dela para o envio da carta,
+criando-se um caminho muito mais direto até achar a casa correta.
+
+As redes P2P de terceira geração, criadas por Bram Cohen em 2001, foram
+popularizadas por clientes de soluções como utorrent \cite{cohen2003}. O
+bittorrent revolucionou a transferência de dados ao abandonar o modelo
+vigente, o qual enviava arquivos inteiros de um nodo a outro. A
+fragmentação em blocos, ou pieces, é definida pela divisão em pequenos
+blocos, um usuário não precisa esperar o download terminar para começar a
+enviar dados. Enquanto baixa o bloco B de usuário 1, envia o bloco A que já
+detém para o usuário 2.
+
+A verdadeira descentralização do bittorrent veio à tona somente com o
+surgimento das DHTs, ou distributed hash tables, em especial o protocolo
+Kademlia \cite{maymounkovmazieres2002}, que permitiu a operação sem
+rastreamento do bittorrent. Em vez de depender de super nós ou inundações
+cegas, o Kademlia organiza a rede atribuindo um identificador numérico
+único (hash de 160 bits) tanto para os nós quanto para os arquivos. A
+localização de um dado é feita calculando uma ``distância lógica''
+matemática entre esses identificadores por meio da operação XOR. Para
+visualizar o funcionamento de uma DHT, pode-se imaginar um grande catálogo
+telefônico global dividido em seções. Um usuário não precisa guardar o
+contato de milhões de pessoas na internet; ele guarda apenas uma lista
+telefônica reduzida, contendo contatos próximos do seu próprio número e
+alguns contatos estratégicos para regiões mais distantes da rede. Quando
+deseja buscar um arquivo específico, o nó envia a requisição para o
+contato de sua tabela que possui a numeração mais próxima da chave do
+arquivo desejado. Esse contato, por sua vez, redireciona o pedido para
+alguém ainda mais próximo, afunilando a busca rapidamente até alcançar o
+detentor do dado. Esse roteamento estruturado garante que a busca por um
+arquivo em uma rede com milhões de nós seja concluída em apenas $O(\log N)$
+saltos de mensagens, eliminando completamente a tempestade de tráfego
+(flooding) característica das redes de segunda geração.
+
+As distributed hash tables na terceira geração das redes P2P foram um
+incontestável sucesso. A distribuição massiva de dados descentralizados em
+blocos entre múltiplos milhões de usuários foi alcançada depois de
+inúmeros avanços e superações de problemas relacionados a hardware, SO e
+redes de computadores \cite{maymounkovmazieres2002,cohen2003}. Entretanto,
+essas grandes redes foram projetadas sob a premissa de uma imutabilidade de
+dados, um arquivo MP3, ou um vídeo, não mudam de tempos em tempos, seu hash
+sempre será aquele, a depender do algoritmo utilizado. Um outro hash
+representa um arquivo completamente diferente, sempre. Por outro lado, os
+sistemas interativos modernos não são imutáveis, eles mudam rapidamente e
+repetidamente, e exigem a alteração constante e simultânea do estado
+daquele arquivo, board, ferramenta por múltiplos usuários
+\cite{kleppmann2019}.
+
+Em uma arquitetura P2P descentralizada, órfã de um servidor geral agindo
+como uma fonte única da verdade (Single Source of Truth), a sincronização
+de dados em tempo real enfrenta o dilema da divergência de dados. Uma dada
+informação, alterada por dois usuários ao mesmo tempo, precisa ser
+sincronizada não só por ambos, mas também por toda a rede, que também pode
+estar alterando outros dados paralelamente. A latência e a ordenação dos
+fatos podem levar nodos distintos a terem versões diferentes da realidade,
+o que pode ser contornado com a reintrodução de um servidor central
+\cite{lamport1978,tanenbaumvansteen2007}. O problema é o custo com isso
+atrelado, isto é a reintrodução, também, de um ponto único de falha
+(Single Point Of Failure).
+
+Como uma alternativa para superar essas limitações sem recorrer ao modelo
+cliente-servidor, este trabalho propõe o desenvolvimento e análise de um
+Motor de Sincronização Descentralizada para Aplicações em Tempo Real. Para
+fundamentar e resolver o conflito de divergência sem autoridade central, o
+motor utiliza estruturas de dados específicas para consistência eventual,
+como Conflict-free Replicated Data Types (CRDTs) \cite{shapiro2011}. Para
+validar e avaliar o desempenho da solução em termos de latência,
+resiliência e concorrência, é desenvolvida uma Proof of Concept (PoC)
+focada na sincronização espacial de mapas interativos entre múltiplos
+usuários simultâneos.
