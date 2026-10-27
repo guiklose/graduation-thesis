@@ -9,7 +9,6 @@
 /.time_flag.txt
 
 *.sublime-workspace
-main.pdf
 
 # Latex files related
 *.brf
