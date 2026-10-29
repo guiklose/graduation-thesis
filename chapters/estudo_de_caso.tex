@@ -2,3 +2,157 @@
 \chapter{\lang{Case Study Context and Concepts}{Contexto do Estudo de Caso e Conceitos}}
 \phantomsection
 
+\section{libp2p: A Modular Networking Stack for Peer-to-Peer Applications}
+
+Historicamente, aplicações \textit{peer-to-peer} (como Napster ou BitTorrent) possuíam camadas de rede monolíticas, com protocolos de transporte e mecanismos de descoberta de pares
+rigidamente acoplados à lógica de suas aplicações. Isso criava sistemas inflexíveis, incapazes de se comunicar entre nodos usando diferentes meios
+de transporte ou ambientes (navegador, servidor, smartphone).
+
+A motivação por trás da libp2p foi criar uma \textit{stack} de rede modular agnóstica. A internet é um ambiente fora de controle, repleto de \textit{firewalls}, roteadores NAT e dispositivos
+operando em camadas e contextos distintos. A libp2p foi imaginada para integrar esses diferentes sistemas, independentemente de seus protocolos, redes, sistemas operacionais e
+ambientes distintos \cite{libp2p}. Para isso, ela é composta por uma coleção de módulos que podem ser empilhados e usados em conjunto, conforme a necessidade da aplicação.
+
+Diferente do modelo cliente-servidor tradicional, onde os nós são identificados por endereços de IP, na libp2p cada nó é identificado por um PeerID, derivado da sua chave criptográfica pública \cite{libp2ppeerids}.
+O endereço de IP é tratado apenas como uma rota temporária (multiaddr) para chegar àquela identidade \cite{multiaddr}.
+
+A biblioteca suporta diversos meios de transporte, como TCP, QUIC (sobre UDP), WebRTC (para \textit{browsers}) e WebSockets \cite{libp2pspecs}. Uma vez que
+dois nós tenham estabelecido uma conexão segura, é permitido que múltiplos subprotocolos paralelos rodem sobre essa mesma conexão (multiplexação), sem interferir uns nos outros \cite{libp2pconnections}. A ferramenta também
+resolve o clássico problema de encontrar nós, através de módulos intercambiáveis \cite{libp2pspecs}.
+
+Já para o problema de NAT, a libp2p oferece três módulos: o AutoNAT, que detecta se o nó está atrás de um NAT \cite{libp2pautonat}; o Circuit Relay, que usa um outro nó como intermediário
+da conexão \cite{libp2prelay}; e o DCUtR, que tenta transformar essa conexão intermediada em uma conexão direta, através de \textit{hole punching} \cite{libp2pdcutr}.
+
+A forte adoção da libp2p validou o modelo modular para toda uma indústria. Ela atua como infraestrutura de transporte em grandes redes como a camada de consenso do Ethereum \cite{ethp2p} e o IPFS \cite{libp2p}.
+
+\section{Iroh}
+
+Embora a libp2p e o IPFS (para sistemas de arquivos) tenham se estabelecido como padrões na indústria para redes \textit{peer-to-peer} e Web3, essas ferramentas ainda são consideradas, para algumas
+aplicações, complexas. Como alternativa, surgiu uma segunda opção, que evoluiu conceitualmente e respondeu a gargalos da libp2p, com foco em velocidade, simplicidade e dispositivos móveis.
+O acoplamento entre os componentes da libp2p (DHT, \textit{pubsub}, negociação de transporte) torna o sistema difícil de configurar e de entender \cite{irohfaq}.
+
+O Iroh nasceu como um projeto de reescrita do IPFS na linguagem Rust para torná-lo mais rápido. Contudo, para atingir as métricas de desempenho e confiabilidade desejadas, os
+desenvolvedores perceberam que precisariam quebrar a compatibilidade com as implementações existentes do IPFS \cite{irohnewdirection}. A motivação do Iroh é fornecer conexões P2P diretas entre dispositivos, identificados por chave pública, com a
+menor latência possível e sem a complexidade de configuração da camada de rede \cite{iroh}.
+
+O Iroh foi construído nativamente sobre o protocolo QUIC \cite{rfc9000}, a base do HTTP/3 \cite{rfc9114}, descartando o TCP \cite{iroh}. O QUIC oferece estabelecimento rápido de conexão, criptografia nativa (TLS 1.3) e ausência do bloqueio de cabeça de fila (\textit{head-of-line blocking}) entre \textit{streams},
+tornando a troca de mensagens mais rápida, mesmo em redes instáveis, como 4G e 5G.
+
+Diferente de protocolos antigos que usam SHA-256, o iroh-blobs, protocolo de transferência de dados do Iroh, utiliza o algoritmo de hash BLAKE3 \cite{irohblobs}. Por ser internamente uma árvore de Merkle, ele permite que os dados sejam processados de forma paralelizada e verificados durante a transmissão (\textit{verified streaming}), aproveitando a velocidade
+máxima do hardware \cite{blake3}.
+
+Ele resolve problemas com NAT (roteadores bloqueando conexões de fora), um dos principais de aplicações P2P, com servidores de repasse (\textit{relays}), originalmente chamados de DERP (\textit{Designated Encrypted Relay for Packets}) \cite{irohchangelog}. A conexão começa passando pelo \textit{relay}, por onde os nós trocam informações de rede e tentam se conectar diretamente (\textit{hole punching}). Se
+conseguirem, o \textit{relay} sai do caminho; se os \textit{firewalls} forem muito rígidos, o tráfego continua passando por ele. O \textit{relay} não consegue ler os dados, pois a conexão é criptografada de ponta a ponta \cite{irohrelay}. O usuário não
+percebe a diferença, pois ela é abstraída pelo Iroh.
+
+Sobre essa camada de conexão, o Iroh oferece protocolos separados, como o iroh-docs, para sincronização de estados \cite{irohprotocols}. Ele permite que múltiplos nós editem uma estrutura de dados de
+chave-valor concorrentemente e a rede cuida de sincronizar as atualizações, através de uma técnica chamada \textit{range-based set reconciliation} \cite{irohdocs, meyer2022}.
+
+O Iroh já é utilizado em aplicações reais. O Delta Chat, um aplicativo de mensagens descentralizado \cite{deltachat}, usa o Iroh em duas funcionalidades: para transferir o
+\textit{backup} de um dispositivo para outro através de um QR code \cite{deltachattransfer}, e para criar canais de comunicação em tempo real entre os aplicativos webxdc
+que rodam dentro das conversas, através do iroh-gossip \cite{deltachatpeerchannels}. Nos dois casos, os dispositivos se conectam diretamente, sem que os dados passem pelo servidor de mensagens.
+
+Já a Nous Research utiliza o Iroh na Psyche, uma rede para treinamento distribuído de modelos de IA pela internet. Os nós trocam metadados sobre os resultados do treinamento
+através do iroh-gossip e baixam os resultados em si através do iroh-blobs. Segundo os autores, o Iroh consegue estabelecer conexões diretas em cerca de 90\% dos casos, contra
+70\% da libp2p, e migra a conexão entre redes sem interrompê-la, graças ao QUIC \cite{nouspsyche}.
+
+Por fim, os desenvolvedores do Iroh mantêm uma integração de exemplo com o Automerge, onde o Iroh é usado como camada de rede para sincronizar documentos CRDT entre os nós \cite{irohautomerge}.
+
+\section{Yjs}
+
+A prova acadêmica dos CRDTs resolveram os problemas matemáticos para sincronização de estados, mas consumiam muita memória e CPU no processo. A serialização de grandes JSONs travava navegadores
+mais fracos, a depender do tamanho dos documentos serializados. O Yjs foi criado por Kevin Jahns para preencher a lacuna entre a teoria acadêmica e alta performance, implemetando uma biblioteca capaz
+de suportar a edição colaborativa em grande escala sem gargalos de memória e CPU.
+
+Yjs implementa o algoritmo YATA, anteriormente desenhado para evitar o embaralhamento de textos quando usuários diferentes editam os mesmos valores. Ele modela o documento colaborativo como uma lista
+duplamente encadeada, em vez de árvores. O Run-Length Encoding (RLE) usa codifiação binária compacta para condensar milhares de operações em vetor de poucos bytes. O Yjs é focado nos dados e agnóstico
+em relação à rede, permitindo acoplar os deltas binários em WebRTC, WebSockets ou malhas P2P.
+
+O Yjs não faz suposições sobre a rede usada nas implementações. Paradigmas como cliente-servidor são tão usáveis quanto \textit{peer-to-peer}: desde que as mudanças sejam comunicadas, ocorrerá a sincronização dos estados.
+Isso ocorre independentemente de a comunicação ser feita por WebSockets, WebRTC (\textit{browsers}) ou outros \textit{providers} \cite{yjs}. Ele suporta edição \textit{offline}, o que permite seguir a filosofia Local-First, onde as alterações são aplicadas
+primeiramente no local e depois comunicadas aos outros nodos. Eles, por sua vez, aplicam essas alterações, que são mescladas automaticamente pelos CRDTs, abstraídos como estruturas de dados convencionais do JavaScript.
+
+Internamente, todos os tipos compartilhados (\textit{shared types}) são listas. Isso significa que um único algoritmo, o YATA \cite{nicolaescu2016}, resolve os conflitos de todos os tipos. Cada item tem um ID, formado pelo identificador do cliente e por um relógio de Lamport, e guarda os vizinhos
+do momento em que foi inserido. Com isso, dois usuários que inserem no mesmo ponto chegam à mesma ordem final. Um item deletado não desaparece, ele vira um \textit{tombstone} no conjunto de deleções (\textit{delete set}). Para que os metadados não cresçam \textit{ad infinitum},
+o Yjs junta em um único item os caracteres digitados em sequência pelo mesmo usuário e descarta o conteúdo dos itens deletados. Em um documento real, com 182 mil inserções e 77 mil deleções, o conjunto de deleções ocupou apenas 4,5 KB \cite{yjsinternals}.
+
+Usado por diversas aplicações \cite{yjs}, o Yjs é utilizado tanto em aplicações cliente-servidor quanto \textit{peer-to-peer}. Entre os usuários mais conhecidos estão o JupyterLab, para notebooks colaborativos, e o JupyterGIS, um editor colaborativo de sistemas de informação geográfica \cite{yjs, jupytergis}. O Room.sh, uma ferramenta de reuniões com funcionalidades embutidas de
+desenho, edição e codificação, faz uso do \textit{framework} para sincronizar seus vários estados entre múltiplos usuários. Outras aplicações diferentes também contam com uso do Yjs, como o
+Dynaboard, um construtor colaborativo de aplicações web, e o LegendKeeper, uma ferramenta colaborativa para planejamento de campanhas de RPG \cite{yjs}.
+
+\section{Automerge}
+
+A motivação do Automerge era permitir aos programadores a criação de softwares Local-First manipulando estruturas de dados familiares (listas, \textit{strings}, objetos JSON) sem precisar lidar com os problemas complexos de sistemas distribuídos \cite{automerge}. Nascido com foco na experiência do desenvolvedor e na preservação de histórico, o Automerge
+funciona como um ``Git para estruturas de dados'' \cite{automerge}. Foi criado pelo laboratório Ink \& Switch, o mesmo que publicou o artigo fundador do Local-First, com participação de Martin Kleppmann, um dos autores desse artigo, e é baseado na pesquisa sobre CRDTs para JSON \cite{kleppmann2019, kleppmannberesford2017}.
+
+Enquanto o Yjs representa internamente todos os tipos como listas, com foco em desempenho, o Automerge modela o documento como uma árvore JSON aninhada \cite{kleppmannberesford2017}. Na versão 3.0, o Automerge passou a usar o seu formato colunar comprimido também durante a execução, e não apenas no armazenamento, reduzindo o uso de memória em mais de 10 vezes \cite{automerge3}.
+Ele salva o histórico completo das mutações compactando colunas de dados semelhantes \cite{automerge3}. Já a sincronização envia apenas as alterações que o outro nó ainda não possui \cite{automerge}.
+
+Assim como no Git, cada alteração feita em um documento é registrada como uma \textit{change}, parecida com um \textit{commit}. Cada \textit{change} é identificada pelo
+\textit{hash} SHA-256 do seu conteúdo e aponta para as \textit{changes} das quais depende, formando um grafo acíclico dirigido (DAG). As \textit{changes} mais recentes desse grafo,
+que ainda não possuem sucessoras, são chamadas de \textit{heads} \cite{automergespec}. Dentro de cada \textit{change}, toda operação recebe um ID formado por um contador e
+pelo identificador da réplica (\textit{actor ID}), ou seja, um relógio de Lamport. Isso impõe uma ordem total entre as operações: vence o maior contador e, em caso de empate,
+o maior \textit{actor ID} \cite{automergespec}.
+
+Na maioria dos casos, a mesclagem é direta. Alterações em objetos ou propriedades diferentes são simplesmente combinadas. Em listas e textos, todas as inserções e deleções
+são preservadas, e inserções concorrentes na mesma posição recebem a mesma ordem em todos os nós \cite{automergeconflicts}. Já para valores numéricos, o Automerge oferece
+o tipo \texttt{Counter}, que soma incrementos concorrentes: se dois usuários incrementam um valor 3 ao mesmo tempo, o resultado é 5, e não 4 \cite{automergecounters}.
+
+O único caso sem resolução automática é quando dois usuários alteram a mesma propriedade do mesmo objeto. Nesse caso, o Automerge escolhe um dos valores como vencedor,
+de forma determinística e igual em todos os nós, sem depender do relógio físico das máquinas. Os valores perdedores não são descartados: eles ficam acessíveis pela função
+\texttt{getConflicts()}, permitindo que a aplicação mostre o conflito ao usuário \cite{automergeconflicts}.
+
+A sincronização entre dois nós é baseada no trabalho de \citeonline{kleppmannhoward2020}. Cada nó guarda o que sabe sobre as \textit{heads} do outro e, a cada mensagem
+trocada, envia apenas as \textit{changes} que o outro ainda não possui, até que os dois tenham o mesmo histórico \cite{automergesync}. Por cima disso, o Automerge Repo
+cuida da parte de infraestrutura: ele salva os documentos localmente através de adaptadores de armazenamento, como o IndexedDB no navegador ou o sistema de arquivos,
+e os distribui para outros nós através de zero ou mais adaptadores de rede, como o WebSocket \cite{automergerepo}.
+
+Os casos de uso podem variar, mas ele se estende para todas as aplicações Local-First ou que requerem um histórico de edições, como no Git. Aplicações Local-First exigem armazenamento local robusto e controle de versão, como gerenciadores de conhecimento, ferramentas de produtividade \textit{offline} e outros tipos de sistemas
+onde os usuários necessitam viajar entre os históricos passados de alterações.
+
+Os primeiros casos de uso foram os protótipos do próprio Ink \& Switch, apresentados no artigo sobre Local-First \cite{kleppmann2019}: o Trellis, um quadro Kanban inspirado no
+Trello, que experimentou uma interface de ``viagem no tempo'' para navegar pelos estados anteriores do documento; o Pixelpusher, um editor colaborativo de \textit{pixel art}; e o
+PushPin, um mural colaborativo de mídias mistas, parecido com o Miro, considerado pelos autores o mais completo dos três. Além disso, como visto na seção sobre o Iroh, existe
+uma integração de exemplo que usa o Iroh como camada de rede para sincronizar documentos do Automerge \cite{irohautomerge}.
+
+\section{Comparativo e Posicionamento do Trabalho}
+
+WORK IN PROGRESS - É PRECISO AVANÇAR MAIS PARA CONTINUAR ESSE CAPITULO
+
+\begin{table}[htb]
+    \centering
+    \caption{Comparativo entre libp2p e Iroh}
+    \label{tab:libp2p-iroh}
+    \begin{tabular}{|p{0.22\textwidth}|p{0.34\textwidth}|p{0.34\textwidth}|}
+        \hline
+        \textbf{Critério} & \textbf{libp2p} & \textbf{Iroh} \\ \hline
+        Arquitetura & Coleção de módulos empilháveis, conforme a necessidade da aplicação & Núcleo de conexão, com protocolos separados por cima (iroh-blobs, iroh-gossip, iroh-docs) \\ \hline
+        Implementações & Várias (Go, Rust, JavaScript, entre outras), seguindo as mesmas especificações & Rust \\ \hline
+        Identidade do nó & PeerID, derivado da chave pública & Chave pública Ed25519 \\ \hline
+        Transportes & TCP, QUIC, WebRTC, WebSockets, entre outros & QUIC \\ \hline
+        Segurança e multiplexação & Módulos próprios sobre a conexão (ou nativos, no QUIC) & Nativos do QUIC \\ \hline
+        Travessia de NAT & AutoNAT, Circuit Relay e DCUtR (\textit{hole punching}) & Conexão inicia pelo \textit{relay} e migra para direta via \textit{hole punching} \\ \hline
+        Conexões diretas (segundo a Nous Research) & Cerca de 70\% & Cerca de 90\% \\ \hline
+        Descoberta de pares & Kademlia DHT, mDNS e \textit{rendezvous} & DNS (Pkarr) e, opcionalmente, a DHT do BitTorrent; sem DHT Kademlia própria \\ \hline
+        Difusão de mensagens & GossipSub & iroh-gossip (HyParView e PlumTree) \\ \hline
+        Casos de uso & Camada de consenso do Ethereum, IPFS, OrbitDB & Delta Chat, Psyche \\ \hline
+    \end{tabular}
+    \fonte{Elaborado pelo autor, com base em \citeonline{libp2p}, \citeonline{libp2pspecs}, \citeonline{iroh}, \citeonline{irohfaq}, \citeonline{irohaddresslookup} e \citeonline{nouspsyche}.}
+\end{table}
+
+\begin{table}[htb]
+    \centering
+    \caption{Comparativo entre Yjs e Automerge}
+    \label{tab:yjs-automerge}
+    \begin{tabular}{|p{0.26\textwidth}|p{0.32\textwidth}|p{0.32\textwidth}|}
+        \hline
+        \textbf{Critério} & \textbf{Yjs} & \textbf{Automerge} \\ \hline
+        Base teórica & YATA \cite{nicolaescu2016} & CRDT para JSON \cite{kleppmannberesford2017} \\ \hline
+        Modelo de dados & Todos os tipos são listas internamente & Documento JSON aninhado (mapas, listas, texto, contadores) \\ \hline
+        Histórico & Descarta o conteúdo dos itens deletados & Guarda o histórico completo, como um grafo de \textit{changes} \\ \hline
+        Foco & Edição colaborativa em tempo real e desempenho & Versionamento e aplicações Local-First \\ \hline
+        Rede & Agnóstico, via \textit{providers} & Agnóstico, via Automerge Repo \\ \hline
+        Tempo para aplicar o histórico real (B4) & 5.714 ms & 14.326 ms \\ \hline
+        Tamanho final do documento (B4) & 159.929 bytes & 129.116 bytes \\ \hline
+    \end{tabular}
+    \fonte{Elaborado pelo autor, com base em \citeonline{yjs}, \citeonline{yjsinternals}, \citeonline{automerge} e \citeonline{crdtbenchmarks}.}
+\end{table}

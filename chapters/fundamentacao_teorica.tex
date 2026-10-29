@@ -4,8 +4,6 @@
 
 \section{Evolução Histórica das Arquiteturas Distribuídas e do Modelo P2P}
 
-\subsection{As Origens na ARPANET e a Simetria Original}
-
 As redes \textit{Peer-to-peer} estão na computação como conceito e aplicações desde os
 primórdios da ARPANET. Na verdade, a própria ARPANET poderia ser descrita
 como uma rede de comunicação entre nodos -- ou ``pares'' -- descentralizada
@@ -14,8 +12,6 @@ internet como é conhecida hoje é uma comunicação entre múltiplas máquinas,
 múltiplos pares, para envio e recebimento de recursos. Longe de ser uma
 novidade recente, o conceito é maduro e fundamenta a comunicação entre
 sistemas desde a década de 1960.
-
-\subsection{A Dominância do Modelo Cliente-Servidor e a Crise de Escalabilidade}
 
 Nos anos 90 ocorreu uma transição do que se conhecia anteriormente como
 ARPANET para a World Wide Web, trazendo com a mudança milhões de usuários
@@ -193,8 +189,6 @@ saltos de mensagens, eliminando completamente a tempestade de tráfego
 
 \section{Sincronização de Estado Mutável em Tempo Real}
 
-\subsection{A Limitação dos Dados Estáticos em Redes P2P Tradicionais}
-
 As \textit{distributed hash tables} na terceira geração das redes P2P foram um
 incontestável sucesso. A distribuição massiva de dados descentralizados em
 blocos entre múltiplos milhões de usuários foi alcançada depois de
@@ -238,9 +232,7 @@ para ambientes colaborativos \cite{nichols1995}. Contudo, ele se torna complexo 
      computadores pessoais e celulares da época.
 \end{itemize}
 
-\subsection{Ausência de Relógio Global, Causalidade, Relógios Lógicos e Vetoriais}
-
-A subseção anterior descreve o problema de divergência de estados concorrentes, não sendo possível saber qual evento foi
+O problema de divergência de estados concorrentes descreve a incapacidade de saber qual evento foi
 realizado primeiro, ou se eles ocorreram simultaneamente. Soma-se a isso a ausência de um relógio global e a incapacidade de se confiar
 em um relógio local, cujo cristal de quartzo sofre desvios de frequência imprevisíveis
 em relação a outros computadores \cite{tanenbaumvansteen2007}. O relógio físico de um sistema operacional, seu \textit{timestamp}, por assim dizer,
@@ -277,7 +269,7 @@ Para comparar dois eventos, comparam-se seus vetores posição a posição. Se t
 Caso nem $V(a) \leq V(b)$ nem $V(b) \leq V(a)$, os eventos são concorrentes ($a \parallel b$), situação que os relógios
 de Lamport não eram capazes de identificar anteriormente \cite{mattern1989}.
 
-\subsection{O Dilema da Concorrência e Consistência Eventual Forte (SEC)}
+\section{O Dilema da Concorrência e Consistência Eventual Forte (SEC)}
 
 Em uma arquitetura P2P descentralizada, órfã de um servidor geral agindo
 como uma fonte única da verdade (\textit{Single Source of Truth}), a sincronização
@@ -316,8 +308,6 @@ conflitos de forma descentralizada e sem a necessidade de um servidor central.
 
 \section{Estruturas de Dados para Resolução Descentralizada de Conflitos (CRDTs)}
 
-\subsection{Semirreticulados Superiores (\textit{Join-Semilattices}) e Propriedades Matemáticas}
-
 Lidar com divergências de estado em sistemas distribuídos sempre foi um dos principais impasses da área. No início dos anos 2000,
 essa comunidade provou o Teorema CAP \cite{brewer2000,gilbertlynch2002} e, com isso, a impossibilidade de se ter consistência
 forte, disponibilidade e tolerância a partições simultaneamente. O OT era direcionado para sistemas centralizados e quebrava em P2P \cite{oster2006},
@@ -341,8 +331,6 @@ nunca retroceder \cite{shapiro2011}.
 A ideia, porém, não surgiu do zero. Algoritmos como o WOOT \cite{oster2006}, o Treedoc \cite{preguica2009} e o Logoot \cite{weiss2009}
 já exploravam estruturas comutativas para edição colaborativa em redes P2P. Com esses padrões matemáticos, Shapiro e sua equipe propuseram, comprovaram e criaram os Tipos de Dados Replicados Livres de Conflitos (CRDTs) \cite{shapiro2011},
 provando que era possível alcançar a SEC (consistência eventual forte) em sistemas distribuídos descentralizados, sem a necessidade de um servidor central.
-
-\subsection{Abordagens de CRDTs: \textit{State-based} (CvRDT), \textit{Operation-based} (CmRDT) e \textit{Delta-State}}
 
 Após a proposição de Shapiro, os CRDTs viraram objeto de estudo, assim como as primeiras redes P2P. Shapiro e sua equipe definiram duas abordagens equivalentes, já que uma consegue emular a outra
 \cite{shapiro2011}, e, anos depois, uma terceira foi proposta. A primeira, os \textit{State-based} CRDTs, ou CvRDTs (\textit{Convergent Replicated
@@ -369,3 +357,34 @@ como o G-Counter, que só pode ser incrementado, e o PN-Counter, que permite inc
 que permite adicionar e remover elementos de forma concorrente; e as sequências, como o RGA \cite{roh2011}, usadas na edição colaborativa
 de texto. Esses tipos podem ainda ser combinados em estruturas mais complexas, como mapas e documentos JSON, nos quais cada chave guarda
 outro CRDT \cite{kleppmannberesford2017}.
+
+\section{O Paradigma \textit{Local-First Software} e a Soberania dos Dados}
+
+O modelo cliente-servidor é o paradigma histórico da internet há décadas. Em sua égide centralizada se consolidou o
+modelo \textit{Cloud-First}, onde o estado principal da aplicação, os dados e outras informações dos usuários residem em servidores
+centralizados, controlados por grandes provedores (empresas, bancos, governos, entre outros) que agem como a única fonte de
+verdade daqueles dados (\textit{Single Source of Truth}). Embora esse paradigma tenha resolvido os problemas de colaboração
+em tempo real e compartilhamento de dados, ele tornou as aplicações dependentes de conectividade e latência, além de colocar em risco a
+privacidade dos dados do usuário.
+
+Alternativamente à abordagem centralizada, \citeonline{kleppmann2019} propuseram um novo paradigma, guiado por sete ideais (velocidade, uso em
+múltiplos dispositivos, funcionamento \textit{offline}, colaboração, longevidade, privacidade e controle do usuário). O \textit{Local-First software} define
+um modelo não apenas com funcionalidades \textit{offline}, mas com uma verdadeira inversão de hierarquia no armazenamento de dados. A
+cópia primária dos dados deve residir no computador local do usuário; o servidor, quando existe, é reduzido a um papel secundário
+de arquivamento, roteamento e auxílio às conexões ponto a ponto.
+
+Conciliar a ``independência da rede'' com a ``colaboração contínua'' é uma batalha desafiadora em sistemas distribuídos, uma
+vez que, \textit{offline}, os estados e ramificações divergem. \citeonline{kleppmann2019} apontam os CRDTs como a base mais promissora para
+conciliar esses dois ``ideais'', pois garantem a SEC ao mesclar (\textit{merge}) alterações locais de forma determinística quando
+a rede é restabelecida, ainda que existam desafios em aberto.
+
+O paradigma \textit{Local-First} traz consigo uma discussão antiga sobre soberania de dados. No modelo estabelecido, o usuário tem, supostamente,
+controle de seus dados, mas precisa se comunicar por uma API para acessá-los, um direito temporário de acesso, em muitos casos. Caso ocorra um
+bloqueio de conta, o usuário perde o acesso, mas aqueles dados não são necessariamente deletados pelo provedor e, em incontáveis casos, são usados
+como produto para terceiros \cite{zuboff2019}. A célebre frase ``Dados são o novo petróleo'' por Clive Humby \cite{palmer2006} ilustra a visão
+das empresas sobre esse aspecto.
+
+Ao transferir a base de dados em sua completude para o armazenamento local, o sistema confere ao usuário a verdadeira custódia da informação. No
+contexto \textit{peer-to-peer}, isso é elevado ao grau máximo de soberania: a centralização da infraestrutura é removida e a comunicação se torna direta
+entre as máquinas que detêm posse local desses dados, unificando a autonomia do armazenamento local com a topologia descentralizada de rede. Implementações
+em cima das redes P2P, voltadas à soberania de dados, incluem as \textit{blockchains} e a Web3.
